@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+		
+		<title>积分明细</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js" ></script>
+		
+		<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>
+		<script src="js/scroll/underscore.js" ></script>
+		<script src="js/scroll/paging.js" ></script>
+		
+		<style type="text/css">
+			td,td>*{
+				word-wrap:break-word
+			}
+			td:nth-child(1){
+				margin: 0 auto;max-width: 3.6rem;
+			}
+			td:nth-child(2){
+				margin: 0 auto;max-width: 1.2rem;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/template" id="tpl">
+			<%for(var i=0;i<data.length;i++){ %>
+				<% var item=data[i]; %>
+				<tr>
+					<!--<td><%=item.income  %></td>-->
+					<td><%=item.money  %></td>
+					<!--<td><%=item.number %></td>-->
+					<td><%=item.time.replace(/\s+/ig,'<br/>')%></td>
+					<!--<td><%=item.timeStamp %></td>-->
+					<td><%=item.type %></td>
+				</tr>
+			 <%}%>
+		</script>
+		
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>积分明细</h1>
+				<div class="right right-date-input" id="date"></div>
+			</header>
+			<div id="list-wrap">
+			    <div id="wrapper" >
+			    	<div>
+				    	<div id="pulldown">
+							<div><span id="pulldown-label">下拉刷新</span></div>
+						</div>
+						<div class="content">
+							<table>
+								<thead>
+									<tr>
+										<!--<th>总得金额</th>-->
+										<th>金额</th>
+										<!--<th>单号</th>-->
+										<th>时间</th>
+										<!--<th>时间戳</th>-->
+										<th>类型/状态</th>
+									</tr>
+								</thead>
+								<tbody id="listContBox">
+									<!--<tr><td>山上有桃子</td><td>8.88</td><td>2017-11-07</td></tr>-->
+								</tbody>
+							</table>
+						</div>	
+						<div id="pullup" >
+							<div><span id="pullup-label">上拉加载</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//获得明细列表
+			var url_getlist = getAjaxOrigin()+"/api/wallet/getIntegralList"; 
+			$(function(){
+	    	    var ops = {
+	    	        wrapper: $("#wrapper"),
+	    	        listContBox:$('#listContBox'),
+	    		    tpl:$('#tpl').html(),
+	    			url: url_getlist
+	    		}
+	    		listObj= list.init(ops);
+	    	})
+		</script>
+	</body>
+</html>

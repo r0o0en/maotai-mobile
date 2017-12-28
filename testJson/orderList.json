@@ -1,0 +1,41 @@
+{
+    "code": 200,
+    "data": [
+        {
+            "goodsCount": 1,
+            "goodsList": [
+                {
+                    "goodsName": "飞天茅台",
+                    "goodsPic": "http://img02.jlhmsh.com/2017/12/16/5702324660492293.png",
+                    "total": 1
+                }
+            ],
+            "id": 170,
+            "orderAmount": 0.01,
+            "orderSn": "NM20171218893737",
+            "status": 0,
+            "statusText": "待付款"
+        },
+        {
+            "goodsCount": 1,
+            "goodsList": [
+                {
+                    "goodsName": "飞天茅台",
+                    "goodsPic": "http://img02.jlhmsh.com/2017/12/16/5702324660492293.png",
+                    "total": 1
+                },
+                {
+                    "goodsName": "飞天茅台",
+                    "goodsPic": "http://img02.jlhmsh.com/2017/12/16/5702324660492293.png",
+                    "total": 2
+                }
+            ],
+            "id": 170,
+            "orderAmount": 0.01,
+            "orderSn": "NM20171218893737",
+            "status": 0,
+            "statusText": "待付款"
+        }
+    ],
+    "msg": "操作成功"
+}

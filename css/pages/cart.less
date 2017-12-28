@@ -1,0 +1,214 @@
+@import '../defined/defined.less';
+
+/*
+   底部功能栏  全选
+ */
+.remove-height-cart {
+    height: 0.8rem;
+    line-height: 0.8rem;
+    background-color: white;
+    border-top: 1px solid #E6E6E6;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+}
+#footer~.remove-height-cart {
+    bottom: 50px;
+}
+
+.remove-height-cart{
+    @pd-l: 1.6rem;
+    padding-left: @pd-l;
+    text-align: right;
+    .btn{height: 0.8rem;display: block;float: right;width: 1.6rem;margin-left: 0.2rem;}
+    .all-checked{
+        width: @pd-l;
+        padding-left: 0.8rem;
+        text-align: center;
+    }
+    .fx label{
+        right: auto;
+        width: 0.8rem;
+    }
+    .sum-price{
+        .text-over-hide;
+    }
+}
+
+/*点击编辑*/
+.edit-show{
+    display: none !important;
+}
+body.edit .edit-show{
+    display: block !important;
+}
+body.edit .edit-hide{
+    display: none !important;
+}
+
+/*
+ 购物车列表
+ * */
+.my-list-one{
+    .my-list-body{
+        &>*{
+           margin:0.1rem 0; 
+        }
+    }
+}
+
+//.row{
+//  display: block;
+//  background: #fff;
+//  padding: 13px 15px;
+//  position: relative;
+//  overflow: hidden;
+//  & + .row{
+//      border-top: 1px solid #eee;
+//  }
+//}
+h3 {
+    margin: 0;
+}
+
+.goods-link-tow {
+    img {
+        display: block;
+        width: 2rem;
+        height: 2rem;
+        float: left;
+    }
+    .goods-link-body {
+        h3 {
+            .text-line-hide(2);
+        }
+        small {
+            color: #999;
+        }
+    }
+}
+
+.price-row {}
+
+
+/*
+ 重置index.less 购物车列表
+ * */
+
+.my-list-one {
+    background-color: white;
+    @pd-l: 0.6rem;
+    .my-list-li {
+        position: relative;
+        padding-left: @pd-l;
+    }
+    .my-list-checked {
+        //width: @pd-l + 0.2rem;
+    }
+    .my-list-left{
+        border: 1px solid #E6E6E6;
+    }
+}
+
+/*
+ 加减  数量
+ * */
+.cu-quantity {
+    .clearfix;
+    &,
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    &>*:first-child {
+        margin-left: 0;
+    }
+    button,
+    input {
+        width: 24px;
+        height: 24px;
+        line-height: 22px;
+        display: block;
+        float: left;
+        margin-left: 2px;
+        border: none;
+        outline: none;
+        background-color: #f5f5f5;
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+    }
+    button {
+        font-size: 0.24rem;
+        color: #60646f;
+        -webkit-transition: 0.2s ease;
+        -moz-transition: 0.2s ease;
+        -ms-transition: 0.2s ease;
+        -o-transition: 0.2s ease;
+        transition: 0.2s ease;
+        &:active {
+            -webkit-box-shadow: inset 0 5px 5px #999;
+            -moz-box-shadow: inset 0 5px 5px #999;
+            box-shadow: inset 0 5px 5px #999;
+        }
+//      background-image:url('../img/add01.png');
+//      background-size: auto 0.5rem;
+//      background-repeat: no-repeat;
+//      background-position: center;
+        &[disabled] {
+            color: #ccc;
+//          background-image: url('../img/add02.png');
+        }
+    }
+    button.cu-minus {
+//      background-image: url('../img/minus01.png');
+        &[disabled] {
+            color: #ccc;
+//          background-image: url('../img/minus02.png');
+        }
+    }
+    button.cu-add {}
+    input {
+        text-align: center;
+    }
+}
+/*
+ 全选按钮
+ * */
+
+.checked-wp{
+    @pd-l: 0.6rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    width: @pd-l + 0.2rem;
+}
+.fx{
+    width: 100%;height: auto;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    input,label{
+        height: 100%;
+        width: 100%;
+        position: absolute;top: 0;left: 0;
+        padding: 0;margin: 0;
+        display: block;
+    }
+    input{
+        z-index: 2;
+        opacity: 0;
+    }
+    label{
+        background-position: center;
+    }
+} 

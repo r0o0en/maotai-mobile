@@ -1,0 +1,412 @@
+@import './defined/defined.less';
+@import './defined/init.less';
+@import './defined/ico.less';
+@import './defined/popups.less';
+@import './defined/btn.less';
+//@import './defined/input.less';
+//@import './defined/scroll.less';
+@import '../js/modal/modal.less';
+@main-color: #009b3b; 
+.hide{display: none;}
+.bd-top{ 
+    border-top: 1px solid #999;
+}
+.bd-bottom{
+    border-bottom: 1px solid #999;
+}
+/* 
+ 通用头部扩展  
+ * */
+#header {
+    position: relative;
+    @ft-sz: 0.3rem;
+    font-size: @ft-sz;
+    line-height: 0.45rem;
+    //  padding: 0.2rem;
+    padding: 0.2rem 0.6rem;
+    background-color: #ebf7f0;
+    &,a {
+        color: #009c3b;
+    }
+    h1 {
+        margin: 0 auto;
+        //      padding: 0.2rem;
+        font-size: 0.36rem;
+        font-weight: 500;
+        text-align: center; 
+    }
+    .right,
+    .left,
+    .return {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        float: none;
+        padding: 0.2rem
+    }
+    .left,
+    .return {
+        ;
+        left: 0;
+    }
+    .left,
+    .right {}
+    .right {
+        right: 0;
+        .flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        align-items: center;
+        >* {
+            display: inline-block;
+        }
+    }
+    .return {
+        width: 0.55rem;
+        background-image: url(../image/ico/ico-left.png);
+        background-position: center;
+        background-size: 0.2rem auto;
+        background-repeat: no-repeat;
+    }
+    nav {
+        font-size: 0;
+        text-align: center;
+        a {
+            @border-radius: 45px;
+            color: #21862a;
+            background-color: white;
+            padding: 0.15rem 0.3rem;
+            font-size: @ft-sz;
+            display: inline-block;
+            &:active {
+                color: #f9d821;
+            }
+            &.active {
+                color: #b23813;
+                background-color: #f9d821;
+            }
+            &:first-child {
+                padding: 0.15rem 0.2rem 0.15rem 0.4rem;
+                .border-radius-tl(@border-radius);
+                .border-radius-bl(@border-radius);
+            }
+            &:last-child {
+                padding: 0.15rem 0.4rem 0.15rem 0.2rem;
+                .border-radius-tr(@border-radius); 
+                .border-radius-br(@border-radius);
+            } 
+            &+a {
+//              border-left: 1px dashed #f9d821;
+            }
+        }
+    }
+}
+.right-date-input{
+    background-color: transparent;
+    border: none;
+    font-size: 0.3rem;
+    width: 1.5rem;
+    padding-left: 0 !important;
+}
+.seek-row{
+    max-width: 100%;
+    @ft-sz: 0.3rem;
+    margin-right: -0.5rem;
+    .flex();
+    select,input,.seek{
+        font-size: @ft-sz;
+        padding: 0.15rem ;
+        background-color: white;
+        .border-radius(4px); 
+    }
+    select,input{
+        margin-right: 0.2rem;
+        min-width: 0;
+        .flex-int(1);
+    }
+    .seek{
+        width: 0.8rem;
+        background-repeat: no-repeat;
+        background-size: 60% auto;
+        background-position: center;
+        background-image: url(../image/ico/ico-seek-green.png);
+        &:active{
+            .box-shadow(inset 0 0 4px rgba(0,0,0,0.6));
+        }
+    }
+    .font{
+        padding: 0.1rem 0.1rem 0;
+        font-size:0.28rem;   
+    }
+}    
+/*ico*/
+
+.ico {
+    .ico();
+}
+.ico-rem-d3 {
+    .ico-defined-size(0.34rem);
+}
+
+.ico-wallet:before {
+    background-image: url(../image/ico/ico-30x30-01.png);
+}
+
+.ico-coins:before {
+    background-image: url(../image/ico/ico-30x30-02.png);
+}
+
+/*
+ 首页  、 商家管理 的代理区域
+ * */
+
+.user-title {
+    font-size: 0.32rem;
+    text-align: center;
+    &>* {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .more {
+        margin-left: 0.1rem;
+        font-size: 12px;
+        line-height: 1;
+        background-color: #ff9c00;
+        padding: 0.02rem 0.1rem;
+        .border-radius(4px);
+    }
+}
+
+
+/*自定义弹出层*/
+
+.popups {
+    .popup-body {
+//      border: 0.08rem solid #f9d821;
+//      background-color: #009b3b;
+//      color: white;
+    }
+    .btn-popup-hide {
+        //      top: -0.1rem;
+        //      right: -0.5rem;
+//      border-color: #eccd1f;
+//      color: #eccd1f;
+        background-color: transparent;
+    }
+    .popup-content {}
+}
+
+
+/*首页 代理区域 弹窗 ul 样式*/
+
+.popup-body {
+    &>header {
+//      color: #f9d821;
+        font-size: 0.36rem;
+        border-bottom: 1px solid #E6E6E6;
+    }
+}
+.popup-content{
+    ul {
+        list-style-position: inside;
+        list-style-type: decimal;
+//      margin-top: 0.2rem;
+//      margin-left: 0.2rem;
+        //      margin: 0.3rem auto 0.3rem 0.3rem;
+        line-height: 2;
+        font-size: 0.3rem;  
+    }
+    p{
+        margin: 0 auto;
+    }
+}
+
+
+/*服务商管理 ，新增服务商弹窗*/
+#popup1 {
+    p {
+        max-width: 4rem; 
+        margin: 0.3rem auto;
+        label {
+            width: 1rem;
+        }
+        input {
+            min-width: 0;
+        }
+        button {
+//          margin: 0 0.2rem;
+            min-width: 1.6rem;
+            font-size: 0.32rem;
+//          padding: 0.2rem;
+        }
+    }
+}
+
+/*
+ scroll 列表公共样式
+ * */
+.imagetext-li{
+    @li-pd:0.2rem;
+    @img-w:2rem;
+    position: relative;
+    padding: @li-pd;
+    padding-left: @img-w + @li-pd*2;
+    & + &{
+        border-top: 1px solid #eee;
+    }
+    .imgbox{
+        position: absolute;top: @li-pd;left: @li-pd;z-index: 1;
+        width: @img-w;
+        height: @img-w;
+        img{
+            display: block;
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+        }
+    }
+    .content{
+        min-height: @img-w;
+        color: #999;
+        .row{
+            margin: 0 auto 0.12rem;
+            &>*{
+                vertical-align: middle;
+//              display: inline-block;
+            }
+        }
+        .title{
+            color: #333;
+            font-weight: 500;    
+            font-size: 0.36rem;
+        }
+    }
+}
+a.main-style{
+    color: @main-color;
+    text-decoration: underline;  
+}
+mark,
+.mark,
+.mark-red{
+    display: inline-block;
+    padding: 0 0.1rem ;
+    line-height: 1;
+    font-size: 12px;
+    .border-radius(4px);
+}
+mark,.mark{
+    border: 1px solid @main-color;
+    color: @main-color;
+}
+.mark-red{
+    border-color: #e02828;
+    color: #e02828;   
+}
+
+
+/*
+    粮票补贴、粮票抵扣 标签
+    <span class="stamps-subsidies fl-l"><mark class="text">补贴粮票</mark><mark class="number">100%</mark></span>
+  */
+.stamps-subsidies{
+//  .scale(0.8);
+    .transform-origin(0 100%); 
+//  float: left;
+    display: inline-block;
+    //<span class="stamps-subsidies fl-l"><mark class="text">补贴粮票</mark><mark class="number">100%</mark></span>
+    @border-color:#009c3b;
+//  @border-color:#ff7b00;
+    @border-radius-width:4px;
+    @hei:16px;
+    @bd-w:1px;
+    font-size: 0;
+    height:@hei;
+    position: relative;
+    padding-left: 66px;
+    mark{
+        background-color: transparent;
+        text-align: center;
+        border-width: @bd-w;
+        //font-size: 12px;
+        font-size: 12px;
+        line-height: @hei - @bd-w*2;
+        height: inherit;
+        border-color:@border-color;
+        &.text{
+            text-align: center;
+            display:block;width: 66px;
+            position: absolute;left: 0;top: 0;
+            border-style: solid;
+            color: white;
+            background-color: @border-color;
+            .border-radius-tl(@border-radius-width);
+            .border-radius-bl(@border-radius-width);
+        }
+        &.number{
+            //max-width: 40px;
+            color: @border-color;       
+            text-align: center;
+            padding: 0 4px;
+            display: block;
+            border-left-width: 0px;
+            border-style:dashed;
+            .border-radius-tr(@border-radius-width);
+            .border-radius-br(@border-radius-width);
+        }
+    }
+    
+}
+
+.money{color: #FF0000;}
+.row{
+    display: block;
+    background-color: white;
+    padding: 0.3rem;
+    font-size: 0.3rem;
+    p{margin: 0;}
+    .clearfix;
+}
+.row + .row{
+    margin-top: 0.3rem;
+}
+.row + .row.no-mg-top{
+    margin-top: 0;
+}
+
+.text-over-hide{
+    .text-over-hide();
+}
+
+.fx{
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    &.block{
+        display: block;
+    }
+    input,label{
+        height: 100%;
+        width: 100%;
+        display: block;
+    }
+    input{
+        position: absolute;top: 0;left: 0;
+        padding: 0;margin: 0;
+        z-index: 2;
+        opacity: 0;
+    }
+    label{
+        padding-left: 20px;
+        min-height: 20px;
+        background-repeat: no-repeat;
+        background-position: left center;
+        background-size: 18px;
+        background-image: url(../image/ico/ico-checked.png);
+    }
+    input:checked ~ label{
+        background-image: url(../image/ico/ico-checked-active.png);
+        color: #0066CC;
+    }
+} 

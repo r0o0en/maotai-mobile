@@ -1,0 +1,265 @@
+/* 
+ *purseList 滚动加载
+  
+        <div class="purseList">
+            <header id="header">
+                <a class="return" href="javascript:history.go(-1);"></a>
+                <nav>
+                    <a class="active" href="">消费奖励</a>
+                    <a href="">兑换管理</a>
+                </nav>
+            </header>
+            <div id="list-wrap">
+                <div id="wrapper" >
+                    <div>
+                        <div id="pulldown">
+                            <div><span id="pulldown-label">下拉刷新</span></div>
+                        </div>
+                        <ul class="content" id="listContBox">
+                            
+                        </ul>   
+                        <div id="pullup" >
+                            <div><span id="pullup-label">上拉加载</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+  iscrollAssist.newVerScrollForPull(wrapper,pulldownAction,pullupAction);
+ * */
+
+/*  
+ * 
+<body>
+    <div id="wrapper">
+        <div>
+            内容
+        <div>
+    </div>
+    <scritp>
+        window.iscrollContent = function (wrapper) {
+            $('#pulldown,#pullup').remove();
+            $(function() {
+                setTimeout(function() {
+                    iscrollAssist.newVerScroll(wrapper || $('#wrapper')[0]); //window.iSObj
+                    window.iSObj.refresh();
+                }, 100);
+            });
+        }
+        setContHeight();
+    </scritp>
+</body>
+* */
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+.purseList,
+.merchantList {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body,
+.purseList,
+.merchantList{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.purseList,
+.merchantList{
+    #footer{
+        position: absolute;bottom: 0;left: 0;
+        display: block;width: 100%;
+        height: 50px;
+    }
+}
+
+//#list-wrap{
+//  position: absolute !important;
+//  top: 0;
+//  right: 0;
+//  bottom: 0;
+//  left: 0;
+//  #header ~ &{
+//      top: 0.85rem;
+//  }
+//  #footer ~ &{
+//      bottom: 50px;
+//  }
+//  .my-select.remove-height ~ &{
+//      top: 42px;
+//  }
+//  #header ~ .my-select.remove-height ~ &{
+//      top: 0.85rem + 42px;   
+//  }
+//}
+    
+//通用头部
+#header {
+    position: relative;
+}
+
+#list-wrap {
+    position: relative;
+    #wrapper {
+        position: absolute;
+    }
+}
+
+#wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    &>div {
+        overflow: hidden;
+        -webkit-margin-before: 0em;
+    }
+}
+
+/****** 下拉刷新、上拉加载更多的样式********/
+#pulldown-label,
+#pullup-label{
+    display: inline-block; position: relative;
+}
+#pulldown-label:after,
+#pullup-label:after{
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: -30px;
+    top: 9px;
+    background: #ff6600;
+}
+#pulldown,
+#pullup {
+    background:#fff;
+    height:41px;
+    line-height:40px;
+//  padding:5px 10px;
+    border-bottom:1px solid #ccc;
+    font-size:14px;
+    color:#888;
+    text-align: center;
+    span{
+        height: 40px;
+    }
+}
+
+#pulldown #pulldown-label:after,
+#pullup #pullup-label:after{
+    background:url(../../image/pull-icons.png) 0 0 no-repeat;
+    -webkit-background-size:20px auto; background-size:20px auto;
+    -webkit-transition-property:-webkit-transform;
+    -webkit-transition-duration:250ms;  
+}
+
+#pulldown #pulldown-label:after {
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullup #pullup-label:after{
+    -webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pulldown.flip #pulldown-label:after{
+    -webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullup.flip #pullup-label:after{
+    -webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pulldown.loading #pulldown-label:after,
+#pullup.loading #pullup-label:after{
+    background-position:0 100%;
+    -webkit-transform:rotate(0deg) translateZ(0);
+    -webkit-transition-duration:0ms;
+
+    -webkit-animation-name:loading;
+    -webkit-animation-duration:2s;
+    -webkit-animation-iteration-count:infinite;
+    -webkit-animation-timing-function:linear;
+}
+@-webkit-keyframes loading {
+    from { -webkit-transform:rotate(0deg) translateZ(0); }
+    to { -webkit-transform:rotate(360deg) translateZ(0); }
+}
+
+/*
+ 通用头部扩展
+ * */
+//@import './defined/defined.less';
+//#header{
+//  @ft-sz: 0.3rem;
+//  font-size: @ft-sz;
+////  padding: 0.2rem;
+//  padding: 0.2rem 0.6rem;
+//  background-color: #009b3b;
+//  &,a{
+//      color: white;
+//  }
+//  h1 {
+//      margin: 0 auto;
+////      padding: 0.2rem;
+//      font-size: 0.36rem;
+//      font-weight: 500;
+//      text-align: center;
+//  }
+//  .return{
+//      position: absolute;
+//      top: 0;
+//      left: 0;
+//      height: 100%;
+//      width: 0.55rem;
+//      background-image: url(../image/ico/ico-left.png);
+//      background-position: center;
+//      background-size: 0.2rem auto;
+//      background-repeat: no-repeat;
+//  }
+//  nav{
+//      font-size: 0;
+//      text-align: center;
+//      a{
+//          @border-radius:45px;
+//          color: #21862a;
+//          background-color: white;
+//          padding: 0.15rem  0.3rem;
+//          font-size: @ft-sz;
+//          display: inline-block;
+//          &:active{
+//              color: #f9d821;
+//          }
+//          &.active{
+//              color: #b23813;
+//              background-color: #f9d821;
+//          }
+//          &:first-child{
+//              padding: 0.15rem 0.2rem 0.15rem 0.4rem;                
+//              .border-radius-tl(@border-radius);
+//              .border-radius-bl(@border-radius);
+//          }
+//          &:last-child{
+//              padding: 0.15rem 0.4rem 0.15rem 0.2rem;
+//              .border-radius-tr(@border-radius);
+//              .border-radius-br(@border-radius);
+//          }
+//          & + a{
+//              border-left: 1px dashed #f9d821;
+//          }
+//      }
+//  }
+//}
+#wrapper>div > *:last-child:not(#pullup){ 
+    padding-bottom: 0.4rem;
+}

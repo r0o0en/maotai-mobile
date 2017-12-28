@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>支付成功</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/order.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />-->
+		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/pages/cart.css" />-->
+		<!--<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css"/>-->
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+
+		<script src="js/scroll/iscroll5-min.js"></script>
+		<script src="js/scroll/iscrollAssist.js"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<!--<script src="js/scroll/paging.js"></script>-->
+		<!--<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/address.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.pay-type{
+				display: none;
+				text-align: center;
+				font-size: 0.4rem;		
+				font-weight: 900;
+			}
+			.pay-type.active{
+				display: block;
+			}
+			.pay-type .btn{
+				font-size: 0.32rem;
+				width: 3rem;
+				margin: 0 auto ;
+			}
+			.pay-type p{
+				margin: 0.3rem auto;
+			}
+			
+			img {
+				vertical-align: middle;
+				display: block;
+				width: 2rem;
+				margin: 0.4rem auto;
+			}
+			small{
+				color: #999999;
+				font-weight: 500;
+			}
+		</style>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="tpl">
+			<%for(var i=0;i<data.length;i++){ %>
+			<% var item=data[i];%>
+			<li class="fx block">
+				<input type="radio" id="<%=item.paymentCode%>" name="payType" checked value="<%=item.paymentCode%>" />
+				<label for="<%=item.paymentCode%>">
+					<img src=<%= item.paymentCode =='alipay'? 'image/ico/zfb.png':'image/alterPassword/logo.png' %> /><%=item.paymentName%>
+				</label>
+			</li>
+			<%}%>
+		</script>
+
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="orderList.html"></a>
+				<h1>支付成功</h1>
+				<div class="right"></div>
+			</header>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<div class="pay-type pay-success active">
+							<img src="image/ico/ico-success.png"/>
+							<p class="cl-green">支付成功</p>
+							<p><small class="auto-return-info">5s后返回订单列表</small></p>
+							<p><a class="btn btn-green btn-sm" href="orderList.html">立即返回</a></p>
+							
+						</div>
+						<div class="pay-type pay-error ">
+							<img src="image/ico/ico-error.png"/>
+							<p class="cl-red error-info">支付失败</p>
+							<p><small class="auto-return-info">5s后返回订单列表</small></p>
+							<p><a class="btn btn-green btn-sm" href="orderList.html">立即返回</a></p>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+				var urld = getQueryData();
+				payStatus(urld.status);
+			});
+			var info =$('.auto-return-info'),
+				time = 5;
+			function payStatus (status) {
+				if(!status || status=='success'){
+					//支付成功
+				}else {
+					//支付失败
+					$('.pay-type').removeClass('active').filter('.pay-error').addClass('active');
+					$('.error-info').text(status);
+				}
+				iscrollContent();
+				autoReturn();
+			}
+			function autoReturn () {
+				info.text(time+'s 后自动返回订单列表页');
+				if(time > 0){
+					time--;
+					setTimeout(autoReturn,1000);
+				}else{
+					time =5;
+					location.href = "setting.html";
+				}
+				
+			}
+		</script>
+	</body>
+
+</html>

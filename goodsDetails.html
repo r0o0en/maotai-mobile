@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>商品详情</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+
+		<link rel="stylesheet" type="text/css" href="js/swiper/swiper.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/goods-details.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/cart.css" />
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/swiper/swiper-3.4.2.jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="details">
+			<%console.log(data);goods=data;goodsId = data.id;var imgarr = getImgurl(data.goodsPics);console.log(imgarr);%>
+			<div class="swiper-container">
+				<div class="swiper-wrapper">
+					<%for(var i=0;i<imgarr.length;i++){ %>
+					<% var item=imgarr[i];%>
+					<div class="swiper-slide"><img src="<%=item%>" /></div>
+					<%}%>
+				</div>
+				<!-- 如果需要分页器 -->
+				<div class="swiper-pagination"></div>
+			</div>
+
+			<div class="row goods-title-row">
+				<h1><%=data.goodsName%></h1>
+				<%if(data.type == 1){ %>
+				<p><span class="stamps-subsidies"><mark class="text">粮票抵扣</mark><mark class="number">100%</mark></span></p>
+				<%}%>
+				<!--<p class="p-bottm mui-clearfix">
+					<span class="money"><%= returnNumbers (data.price)%></span>
+					<del>￥<%=data.marketPrice.toFixed(2)%></del>
+				</p>-->
+				<div class="p-bottm flex">
+					<div class="flex-1">
+						<span class="money"><%= returnNumbers(data.price)%></span>
+						<del>￥<%=data.marketPrice.toFixed(2)%></del>
+					</div>
+					<div class="cu-quantity">
+						<input class="price" type="hidden" name="price" value="<%=data.price.toFixed(2)%>" />
+						<input class="goodsid" type="hidden" name="goodsid" value="<%=data.goodsId%>" />
+						<button class="cu-minus">-</button>
+						<input class="cu-input" type="number" value="1" min="1" max="<%=data.stock||0%>">
+						<button class="cu-add">+</button>
+					</div>
+				</div>
+			</div>
+
+			</div>
+
+			<div class="row">
+				<i class="ico ico-kucun ico-rem-d3"></i> 库存 <span class="fl-r"><%=data.stock%></span>
+			</div>
+
+			<div class="row" onclick="appendDetails()">
+				<p><i class="ico ico-rem-d3"></i>点击查看商品详情<span class="fl-r"> <i class="ico ico-bottom ico-rem-d3"></i></span></p>
+			</div>
+			<div class="row no-mg-top goods-details-row">
+				<% memo = data.memo %>
+			</div>
+		</script>
+
+		<!--<div class="purseList">-->
+		<div class="page">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>优品区</h1>
+			</header>
+			<footer class="remove-height" id="footer">
+				<ul>
+					<li class="active">
+						<a href="cart.html">
+							<span class="ico ico-shopping"></span>
+							<p>购物车</p>
+						</a>
+					</li>
+					<li class="flex-2">
+						<a onclick="goodsDetailsAaddCart(goodsId)" class="btn btn-green btn-addCart">加入购物车</a>
+					</li>
+					<li class="flex-2">
+						<a onclick="goodsDetailsBuy(goodsId)" class="btn btn-orange btn-buy">立即购买</a>
+					</li>
+				</ul>
+
+			</footer>
+			<div id="body" class="on-phgd">
+
+			</div>
+			<!--<div id="list-wrap">
+				<div id="wrapper">
+					<div id="listContBox">
+						
+						
+					</div>
+				</div>
+			</div>-->
+		</div>
+		<script type="text/javascript">
+			var url_getGoodsDetails = getAjaxOrigin() + '/api/goods/getGoodsDetail';
+			/*存储goodsId*/
+			var goodsId;
+			/*存储 goods 参数*/
+			var goods = false;
+			/* 获取url 带参 */
+			var urld = getQueryData();
+			if(urld.id) {
+				getDetails();
+			} else {
+				modal('获取商品详情失败');
+			}
+			
+
+			//iscrollContent();
+			function getDetails() {//获取商品详情
+				ajax({
+					type: 'get',
+					url: url_getGoodsDetails,
+					data: {
+						id: urld.id
+					},
+					success: function(data) {
+						if(data.data) {
+							var str = _.template($('#details').html());
+							//							$('#listContBox').empty().append(str(data));
+							$('#body').empty().append(str(data));
+							//给容器高度
+							//							iscrollContent();
+							//幻灯片
+							new Swiper('.swiper-container', {
+								autoplay: 5000,
+								loop: true,
+								pagination: '.swiper-pagination',
+							})
+							
+						} else {
+							modal('商品详情为空');
+						}
+					}
+				})
+			}
+
+			function appendDetails() {
+				$('.goods-details-row').append(HtmlUtil.htmlDecode(memo)).show();
+				appendDetails = function() {}
+			}
+			//加入购物车
+			function goodsDetailsAaddCart(id) {
+				var num = parseInt($('.cu-input').val());
+				if(num < 1) {
+					num == 1;
+				}
+				addCart(goodsId, num);
+			}
+			//立即购买
+			function goodsDetailsBuy(id) {
+				if(!goods){modal('数据错误');return false;}
+				
+				var num = parseInt($('.cu-input').val());
+				if(num < 1) {num == 1;}
+				var d = {
+					buyType: goods.buyType,
+					goodsMap: {},
+//					goodsList: []
+				};
+				d.goodsMap[goods.id] = num;
+//				d.goodsList.push({
+//					id:goods.id,
+//					total:num,
+//					price:goods.price,
+//					goodsName:goods.goodsName
+//				});
+				settlementOrder(d,function(data){//计算订单
+					//d.sumprice = $('.sum-price .money').text();
+					location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
+				});
+//				location.href = 'orderSettlement.html?data=' + encodeURI(JSON.stringify(d));
+			}
+			//加减控制
+			;
+			(function addRemoveTotal() {
+				var wp = $('#body');
+				min = 1;
+				wp.on('click', '.cu-minus', function(e) { //减
+					var _this = $(this),
+						_input = _this.siblings('.cu-input'),
+						//						min = 1,
+						p = parseInt(_input.val());
+					if(p - 1 >= min) {
+						numberAlertSuccess(_input, p - 1);
+					} else {
+						//modal('购买数量不能小于1');
+					}
+				});
+				wp.on('click', '.cu-add', function(e) { //加
+					var _this = $(this),
+						_input = _this.siblings('.cu-input'),
+						max = parseInt(_input.attr('max')),
+						p = parseInt(_input.val());
+					if(p + 1 <= max) {
+						numberAlertSuccess(_input, p + 1);
+					} else {
+						modal('没有更多库存了！');
+					}
+				});
+				wp.on('change', '.cu-input', function(e) { //减
+					var _this = $(this),
+						max = parseInt(_this.attr('max')),
+						p = parseInt(_this.val());
+					if(p <= max) {
+						if(p >= min) {
+							numberAlertSuccess(_this, p);
+						} else {
+							_this.val(_this.attr('value'));
+							//modal('购买数量不能小于1');
+						}
+					} else {
+						_this.val(_this.attr('value'));
+						modal('没有那么多库存，最多购买' + max + '件!');
+					}
+				});
+
+				function numberAlertSuccess(_input, num) {
+					_input.val(num);
+					_input.attr('value', num);
+				}
+			}());
+		</script>
+	</body>
+
+</html>

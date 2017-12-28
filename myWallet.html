@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>我的钱包</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/myWallet.css" />
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js" ></script>
+	
+		
+		<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>
+		<!--<script src="js/scroll/underscore.js" ></script>-->
+		<!--<script src="js/scroll/paging.js" ></script>-->
+		
+	</head>
+
+	<body>
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>我的钱包</h1>
+			</header>
+			<div id="list-wrap">
+			<div id="wrapper">
+				<div>
+					<section class="wallet-type-list">
+						<ul>
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>总收入</p>
+								<p class="balanceIncome"></p>
+							</li>
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>已消费</p>
+								<p class="balanceExpend"></p>
+							</li>
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>已提现</p>
+								<p class="balanceWithdraw"></p>
+							</li>
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>余额</p>
+								<p class="balance">154800550.00</p>
+							</li>
+							
+						</ul>
+					</section>
+					<section class="user">
+						<div class="bg">
+							<ul>
+								<li>
+									<a href="./bonusList.html">
+										<i class="ico ico-rem-d3 ico-wallet">奖金明细 </i>
+										<span class="fl-r">查看></span>
+									</a>
+								</li>
+								<li>
+									<a href="./rechargeList.html">
+										<i class="ico ico-rem-d3 ico-wallet">充值明细 </i>
+										<span href="./rechargeList.html" class="fl-r">查看></span>
+									</a>
+								</li>
+								<li>
+									<a href="./expenditureList.html">
+										<i class="ico ico-rem-d3 ico-wallet">消费明细 </i>
+										<span class="fl-r">查看></span>
+									</a>
+								</li>
+								<li>
+									<a href="./cashList.html">
+										<i class="ico ico-rem-d3 ico-wallet">提现明细 </i>
+										<span class="fl-r">查看></span>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<p class="text-cenner" style="margin-top: 0;">
+							<a class="btn " href="takeCashManage.html" style="border: 1px solid #009c3b;width: 60%; padding: 0.2rem ;color: #009c3b;">去提现</a>							
+						</p>
+					</section>
+					
+					<section class="wallet-type-list">
+						<ul>
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>积分</p>
+								<p class="integral ">1548005500.00</p>
+							</li>
+							
+							<li>
+								<img src="image/ico/ico-30x30-01.png"/>
+								<p>粮票</p>
+								<p class="foodStamps ">15480.00</p>
+							</li>
+						</ul>
+					</section>
+					
+					<section class="user">
+						<div class="bg">
+							<ul>
+								<li>
+									<a href="integralList.html">
+										<i class="ico ico-rem-d3 ico-wallet">积分明细 </i>
+										<span class="fl-r">查看></span>
+									</a>
+								</li>
+								<li>
+									<a href="couponList.html">
+										<i class="ico ico-rem-d3 ico-wallet">粮票明细 </i>
+										<span class="fl-r">查看></span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</section>
+					
+					<!--<section class="column-ul">
+						<a href="./takeCashManage.html"><img src="image/myWallet/ico-51x51-01.png" /><span>兑换</span></a>
+						<a href="./bonusList.html"><img src="image/myWallet/ico-51x51-02.png" /><span>奖金明细</span></a>
+						<a href="./expenditureList.html"><img src="image/myWallet/ico-51x51-03.png" /><span>消费明细</span></a>
+						<a href="./rechargeList.html"><img src="image/myWallet/ico-51x51-04.png" /><span>充值记录</span></a>
+						<a href="./cashList.html"><img src="image/myWallet/ico-51x51-05.png" /><span>提现记录</span></a>
+						<a ></a>
+						<a href="./accountManage.html"><img src="image/myWallet/ico-51x51-06.png" /><span></span></a>
+					</section>-->
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<!--代理商列表弹窗-->
+		<!--<section class="popups" id="popup1">
+			<div class="popup-wp">
+				<span class="btn-popup-hide">×</span>
+				<div class="popup-content">
+					<div class="poput-body">
+						<header>
+							代理地区
+						</header>
+						<ul>
+							<li></li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</section>-->
+	</body>
+	<script type="text/javascript">
+		//获取钱包汇总数据
+		var  url_getWalletInfo = getAjaxOrigin() + '/api/wallet/getMyWallet';
+		
+		iscrollContent();
+		$(function () {
+			ajax({
+				type:'get',
+				info:'获取汇总',
+				url:url_getWalletInfo,
+				success:function(data){
+					var d = data.data;
+					//积分
+					$('.integral').alterNumbersTwo(d.integral);
+					//粮票
+					$('.foodStamps').alterNumbersTwo(d.foodStamps);
+					//余额
+					$('.balance').alterNumbersTwo(d.balance);
+					//余额消费总额
+					$('.balanceExpend').alterNumbersTwo(d.balanceExpend);
+					//余额总收入
+					$('.balanceIncome').alterNumbersTwo(d.balanceIncome);
+					//余额提现总额
+					$('.balanceWithdraw').alterNumbersTwo(d.balanceWithdraw);
+				}
+			})
+			
+			
+		});
+//		ajax({
+//			url: url_getuser,
+//			info:'获取用户信息',
+//			success: function(data) {
+//				var agent = data.data.agent || {},
+//					wallet = data.data.wallet || {};
+//				//用户名
+//				$(".user-name").html(agent.name);
+//				//代理区域
+//				$('.user-title').agencyArea(agent.rglist);
+//				//余额
+//				$("#money").alterNumbersTwo(wallet.runSubTotalAmount);
+//				//冻结
+//				$("#dong").alterNumbersTwo(wallet.reconciliationTotalAmount);
+//			}
+//		});
+	</script>
+
+</html>

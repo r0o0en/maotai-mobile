@@ -1,0 +1,25 @@
+.page{
+    position: relative;
+    #header , 
+    #footer{z-index: 99;}
+    #header{
+        position: fixed;top: 0;left: 0;right: 0;
+        height: 0.86rem;
+    }
+    #footer{
+        height: 50px;
+        position: fixed;bottom: 0;left: 0;right: 0;
+    }
+    #body{
+//      position: absolute;top: 0.86rem;left: 0;right: 0;bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 30px;
+    }
+    #footer~#body{
+        padding-bottom: 80px;
+    }
+    #header ~ #body{
+        padding-top: 0.86rem;
+    }
+}

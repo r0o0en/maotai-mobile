@@ -1,0 +1,107 @@
+@import '../defined/defined.less';
+@import '../defined/ico.less';
+@import '../defined/input.less';
+.cashWrap{
+    width: 80%;
+    
+    margin: 1.8rem auto 0;
+    text-align: center;
+    &>*{
+        margin: 0 auto 0.2rem ;
+    }
+}
+img{
+    display: block;
+    width: 1.4rem;
+    margin: 0 auto;
+}
+.title{
+//  font-size: 0.32rem;
+    color: #666;
+//  padding: 0.1rem;
+}
+input,.submit{
+    display: block;
+    text-align: center;    
+    max-width: 4.2rem;
+}
+.submit{
+    width: 100%;
+    padding:  0.2rem;
+}
+#nums{
+    color: #000;
+    font-size: 0.56rem;
+    margin: 0.3rem;
+}
+#money{
+    padding: 0.2rem;
+    margin-bottom: 0.4rem;
+    width: 100%;
+    border: 1px solid #c6c6c6 !important;
+}
+/*确认信息*/
+.bankInfo{
+    padding-bottom: 0.5rem;
+    background-color: #eee;
+    .imgtext{
+        
+    }
+    ul{
+        margin: 0.4rem auto;
+        background-color: white;
+        li{
+            padding: 0.2rem;
+            .flex;
+            & + li {
+                border-top: 1px solid #E6E6E6;
+            }
+        }
+        span{
+            width: 1.6rem;
+        }
+        p{
+            flex: 1;
+            margin: 0 auto;
+        }
+    }
+    .btn-wp{
+        .clearfix;
+    }
+    .btn{
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        float: left;
+        width: 50%;
+    }
+}
+  
+/*提交后提示模块*/
+.bankInfo,
+.cashWrap,
+.accomplish{
+    display: none;
+    .transform(translateY(3rem));
+    .opacity(0);
+    .transition(0.6s ease);
+    &.active{
+        .transform(translateY(0));
+        .opacity(1);    
+    }
+}
+.imgtext{
+    background-color: #f4efef;height: 4.5rem;overflow: hidden;
+    text-align: center;
+    img{
+        margin: 0.8rem auto 0; width: 2rem;
+    }
+    p{
+        color: #000;
+        font-size: 0.4rem;
+    }
+}
+#list-wrap,
+#wrapper{
+    background-color: white;
+}

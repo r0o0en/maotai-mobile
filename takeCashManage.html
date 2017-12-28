@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>兑换</title>
+		
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css"/>
+		<link rel="stylesheet" type="text/css" href="css/defined/input.css"/>
+		<link rel="stylesheet" type="text/css" href="css/pages/takeCashManage.css" />
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js" ></script>
+
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="./js/jquery.form.js" ></script>
+		<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>
+		<script src="js/scroll/underscore.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<script type="text/template" id="bankInfo">
+			<% var item= data;%>
+			<div class="imgtext">
+				<img src="image/takeCashManage/ico-notice.png"/>
+				<p>请仔细核对下表所列的账户资料是否存在正确，如有过时请点击修改并完善</p>
+			</div>
+			<ul>
+				<li><span >开户银行</span><p class="flex-1"><%= item.bankName %></p></li>
+				<li><span >银行卡号</span><p class="flex-1"><%= item.bankNo  %></p></li>
+				<li><span >开户地区</span><p class="flex-1"><%= item.bankAddress  %></p></li>
+				<li><span >开户支行</span><p class="flex-1"><%= item.branchName  %></p></li>
+				<li><span >开户姓名</span><p class="flex-1"><%= item.bankUser  %></p></li>				
+			</ul>
+			<div class="btn-wp">
+			<% if(!item.bankName||!item.bankNo||!item.bankAddress||!item.branchName||!item.bankUser){%>
+				<a class="btn btn-lg btn-orange" href="myInfo.html?beforepage=takeCashManage" onclick="replacePage(event,'myInfo.html?beforepage=takeCashManage')" style="width: 100%;">资料不完整，去补充</a>
+			<% }else {%>
+				<a class="btn btn-lg btn-orange" href="myInfo.html?beforepage=takeCashManage" onclick="replacePage(event,'myInfo.html?beforepage=takeCashManage')">修改资料</a>
+				<a class="btn btn-lg btn-green" onclick="affirmInfo()">确认</a>
+			<% }%>			
+			</div>
+		</script>
+		
+		
+		
+		
+		<div class="purseList">
+	
+			<header id="header">
+                <a class="return" href="javascript:history.go(-1);"></a>
+                <h1>兑换</h1>
+        	</header>
+			<div id="list-wrap">
+			<div id="wrapper">
+				<div>
+					<div class="bankInfo">
+					</div>
+					
+					<div class="cashWrap">
+						<img src="image/takeCashManage/tx-icon.png">
+						<p class="title">我的余额</p>
+						<div class="nums" id="nums"><small>￥</small><big><!--1234567890.23--></big></div>
+						<input id="money" type="tel" tabindex="1" placeholder="输入兑换金额" autocomplete="off"/>
+						<button class="submit btn btn-green" id="submit" tabindex="2" > 确认兑换金额</button>
+						<p><small class="cl-999">( 目前只能提100以上整数倍金额 )</small></p>
+					</div>
+					<div class="accomplish">
+						<div class="imgtext">
+							<img src="image/takeCashManage/clock.png"/>
+							<p>7工作日内到达</p>
+						</div>
+						<section class="column">
+							<ul>
+								<li><p >储蓄卡</p><span class="no-bg name bank"><!--平安银行  尾号6001--></span></li>
+								<li><p >兑换金额</p><span class="no-bg account money"><!--￥2000.00--></span></li>
+								<li><p >预计到账时间：</p><span class="no-bg phone paymentDate"><!--2016年1月28日--></span></li>
+							</ul>
+						</section>
+						<button id="accomplish" class="btn btn-green wd-all btn-lg">完成</button>
+					</div>
+					
+				</div>
+			</div>
+			</div>
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		// 查询余额/获取钱包汇总数据
+		var  url_getWalletInfo = getAjaxOrigin() + '/api/wallet/getMyWallet';
+		// 兑换余额 url
+		var url_withdraw = getAjaxOrigin() + "/api/wallet/subWithdrawApply";
+		
+		
+		var moneyobj = $('#money').inputOnlyNumber(),
+			moneymax;
+		$(function () {
+			iscrollContent();
+			$('.bankInfo ,.cashWrap,.accomplish').css('minHeight',$('#list-wrap').height());
+			getMyInfo(function (data) {
+				var str = _.template($('#bankInfo').html());
+				$('.bankInfo').empty().append(str(data));
+				$('.bankInfo').show();
+				setTimeout(function () {
+					$('.bankInfo').addClass('active');
+					window.iSObj.refresh();
+				},100)
+			});
+			
+			
+		});
+		//确认信息
+		function affirmInfo() {
+			$('.bankInfo').hide();
+			$('.cashWrap').show();
+			setTimeout(function () {
+				$('.cashWrap').addClass('active');
+				window.iSObj.refresh();
+			},100);
+			ajax({
+				info:'查询余额',
+				type:'get',
+				url: url_getWalletInfo,
+				success: function(data) {
+					moneymax = data.data.balance.toFixed(2);
+					$("#nums").html(moneymax);
+				}
+			});
+		}
+		
+		//兑换余额
+		$("#submit").on("click", function(e) {
+			var n = 100;
+			var money = parseInt(moneyobj.val());
+			if(money == null || money == "") {
+				modal('请输入兑换数额');
+				moneyobj.focus();
+				return;
+			} else if(money < n) {
+				modal('兑换数额必须大于'+n);
+				moneyobj.focus();
+				return;
+			} else if(money % n != 0) {
+				modal('请输入'+n+'的整数倍');
+				moneyobj.focus();
+				return;
+			} else if(!(moneymax >= money)) {
+				modal('余额不足');
+				moneyobj.focus();
+				return;
+			}
+			//提现请求
+			ajax({
+				info:'余额兑换',
+				url:url_withdraw,
+				data:{"amount": money},
+				success:function (data) {
+					$('.bank').text(data.data.bankCardShort);
+//					$('.money').text('￥'+ money.toFixed(2));
+					$('.money').text(data.data.amountText);
+					$('.paymentDate').text(data.data.predictArriveDate);
+					$('.accomplish  .imgtext p').text(data.data.predictArriveTip);
+					
+					$('.cashWrap').hide();
+					$('.accomplish').show();
+					setTimeout(function () {
+						$('.accomplish').addClass('active');
+						window.iSObj.refresh();
+					},100)
+					
+				}
+			})
+			//完成按钮
+			$('#accomplish').on('click',function () {
+				history.go(-1);
+			})
+		});
+	</script>
+
+</html>

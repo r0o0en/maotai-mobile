@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+
+		<title>我的资料</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/defined/scroll.css"/>-->
+		<link rel="stylesheet" type="text/css" href="css/defined/page.css"/>
+		<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/input.css"/>
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+		<!--<script src="js/scroll/iscroll5-min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/scroll/iscrollAssist.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/setting.js"></script>
+		<script src="js/jquery.form.js" ></script>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="myInfo">
+			<% var item= data;%>
+			<p style="padding: 0.2rem;margin: 0;">基本资料</p>
+			<section class="column-two">
+				<ul>
+					<li><label class="lab">会员账号</label><span class="flex-1"><%=item.mobile %></span></li>
+					<li><label class="lab">会员昵称</label><span class="flex-1"><%=item.trueName%></span></li>
+					<li><label class="lab">会员等级</label><span class="flex-1"><%=item.rankText %></span></li>
+					<li><label class="lab">推荐人</label><span class="flex-1"><%=item.pid %></span></li>
+					<li><label class="lab">省市区</label><span class="flex-1"><%=item.provinceText +'-'+ item.cityText +'-'+ item.areaText%></span></li>
+					<li><label class="lab">性别</label><span class="flex-1"><%=item.sex==1?'男':'女'%></span></li>
+					<li><label class="lab">注册时间</label><span class="flex-1"><%= parseDate(item.regTime)%></span></li>
+				</ul>
+			</section>
+			<p style="padding: 0.2rem;margin: 0;">银行信息</p>
+			<section class="column-two">
+				<ul>
+					<li><label class="lab">开户银行</label><span class="flex-1"><%= item.bankName %></span></li>
+					<li><label class="lab">银行卡号</label><span class="flex-1"><%= item.bankNo  %></span></li>
+					<li><label class="lab">开户地区</label><span class="flex-1"><%= item.bankAddress  %></span></li>
+					<li><label class="lab">开户支行</label><span class="flex-1"><%= item.branchName  %></span></li>
+					<li><label class="lab">开户姓名</label><span class="flex-1"><%= item.bankUser  %></span></li>
+				</ul>
+			</section>
+		</script>
+
+		<script type="text/template" id="myInfoAlter">
+			<% var item= data;%>
+			<form>
+				<p style="padding: 0.2rem;margin: 0;">基本资料</p>
+				<section class="column-two">
+					<ul>
+						<li><label class="lab">会员昵称</label><input class="trueName" type="text" value="<%=item.trueName %>" placeholder='会员昵称' /></li>
+						<li><label class="lab">省市区</label>
+							<div class="">
+								<p>
+									<select class=" province" name="province">
+										<option value="">请选择省</option>
+									</select>
+								</p>
+								<p>
+									<select class=" city" name="city">
+										<option value="">请选择市</option>
+									</select>
+								</p>
+								<p>
+									<select class=" area" name="area">
+										<option value="">请选择县/区</option>
+									</select>
+								</p>
+							</div>
+						</li>
+						<li><label class="lab">性别</label>
+							<div class="">
+								<% if(item.sex==2){ %>
+									<input type="radio" class="sex" name="sex" id="sex_man" value="1"  /><label for="sex_man">男</label>
+									<input type="radio" class="sex" name="sex" id="sex_woman" value="2" checked /><label for="sex_woman">女</label>
+								<% }else {%>
+									<input type="radio" class="sex" name="sex" id="sex_man" value="1"  checked /><label for="sex_man">男</label>
+									<input type="radio" class="sex" name="sex" id="sex_woman" value="2"  /><label for="sex_woman">女</label>										
+								<% }%>
+							</div>
+						</li>
+					</ul>
+				</section>
+				<p style="padding: 0.2rem;margin: 0;">银行信息</p>
+				<section class="column-two">
+					<ul>
+						<li><label class="lab">开户银行</label><input class="bankName" type="text" value="<%= item.bankName %>" placeholder="开户银行" /></li>
+						<li><label class="lab">银行卡号</label><input class="bankNo" type="text" value="<%= item.bankNo  %>" placeholder="银行卡号" /></li>
+						<li><label class="lab">开户地区</label><input class="bankAddress" type="text" value="<%= item.bankAddress  %>" placeholder="开户地区" /></li>
+						<li><label class="lab">开户支行</label><input class="branchName" type="text" value="<%= item.branchName  %>" placeholder="开户支行" /></li>
+						<li><label class="lab">开户姓名</label><input class="bankUser" type="text" value="<%= item.bankUser  %>" placeholder="开户姓名" /></li>
+					</ul>
+				</section>
+			</form>
+		</script>
+		<div class="purseList" style="display: none;">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>我的资料</h1>
+				<div class="right " style="display: none;">
+					<p class="edit" onclick="alterInfoStart()">编辑</p>
+					<p class="success" onclick="alterInfoSuccess()">完成</p>
+				</div>
+			</header>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<div class="my-info-wp" style="margin-bottom: 0.4rem;"></div>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="page">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>我的资料</h1>
+				<div class="right " style="display: none;">
+					<p class="edit" onclick="alterInfoStart()">编辑</p>
+					<p class="success" onclick="alterInfoSuccess()">完成</p>
+				</div>
+			</header>
+			<div id="body">
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			var myInfo;
+			//修改我的信息
+			var url_alterMyInfo = getAjaxOrigin() + '/api/myself/saveDetailInfo';
+			var urld = getQueryData();
+			$(function() {
+//				iscrollContent();
+				getInfo();
+			})
+
+			function getInfo() {
+				getMyInfo(function(data) {
+					myInfo = data;
+					$('.right').show();
+					var str = _.template($('#myInfo').html());
+//					$('.my-info-wp').empty().append(str(data));
+					$('#body').empty().append(str(data));
+//					window.iSObj.refresh();
+				});
+			}
+
+			function alterInfoStart() {
+				$('.right').addClass('active');
+				var str = _.template($('#myInfoAlter').html());
+//					$('.my-info-wp').empty().append(str(myInfo));
+					$('#body').empty().append(str(myInfo));
+				//添加三级联动事件
+				addAreaSelectEvent();
+				//三级城市更新html,并设置默认值
+				ProvinceSan({
+					p:myInfo.data.provinceId,
+					c:myInfo.data.cityId,
+					a:myInfo.data.areaId,
+				})
+//				window.iSObj.refresh();
+			}
+			function alterInfoSuccess(){
+				var d = {};
+				var form = $('form');
+				var trueName = form.find('.trueName'),
+					provinceId = form.find('.province'),
+					cityId = form.find('.city'),
+					areaId = form.find('.area'),
+					sex = form.find('.sex').filter(':checked'),
+					bankName = form.find('.bankName'),//开户银行
+					bankNo = form.find('.bankNo'),//银行卡号
+					bankAddress = form.find('.bankAddress'),//开户地区
+					branchName = form.find('.branchName'),//开户支行
+					bankUser = form.find('.bankUser');//开户姓名
+					
+				if(!trueName.inputjudgeName()){
+					return false;
+				}
+				if(!provinceId.val()||!provinceId.val()||!areaId.val()){
+					modal('请选择省市区');
+					return false;
+				}
+				if(!bankName.inputjudgeBankName() || !bankNo.inputjudgeBankNo() || !bankAddress.inputjudgeBankAddress() || !branchName.inputjudgeBranchName() || !bankUser.inputjudgeBankUser()){
+					return false;
+				}
+				ajax({
+					info:'修改个人信息',
+					url:url_alterMyInfo,
+					data:{
+						trueName:trueName.val(),
+						sex:sex.val(),
+						provinceId:provinceId.val(),
+						cityId:cityId.val(),
+						areaId:areaId.val(),
+						bankName:bankName.val(),
+						bankNo:bankNo.val(),
+						bankAddress:bankAddress.val(),
+						branchName:branchName.val(),
+						bankUser:bankUser.val()
+					},
+					success:function(data){
+						if(urld.beforepage='takeCashManage'){
+//							history.go(-1);
+							window.history.back();
+							location.reload();
+//							return false;
+						}
+						getInfo();
+						$('.right').removeClass('active');
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

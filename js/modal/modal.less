@@ -1,0 +1,214 @@
+/* modal.js 提示框*/
+@img-loading:url(../js/modal/loading.gif) no-repeat center/34px 34px ; 
+@img-upload:url(../js/modal/upload.gif);
+@img-loader:url(../js/modal/loader.gif);
+@bg-sz:34px;
+.modal {
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 100%;
+    -webkit-transition-property: background-color;
+    transition-property: background-color;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center
+}
+
+.modal.modal-active {
+    background-color: rgba(0, 0, 0, .6)
+}
+
+.modal.modal-popup {
+    background: 0;
+    height: auto;
+    top: 50px;
+    bottom: auto
+}
+
+.modal-dialog {
+    text-align: center;
+//  background-color: #fff;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    opacity: 0;
+//  min-width: 270px;
+//  width: 90%;
+    border-radius: 5px
+}
+
+.modal-loading {
+//  margin-bottom: 10px;
+    width: 34px;
+    height: 34px;
+    background: @img-loading;
+    display: inline-block
+}
+
+.modal-loading.upload {
+    background: @img-upload;
+//  background-size: cover;
+}
+
+.modal-dialog,
+.popup,
+.modal-img>img {
+    -webkit-transform: translate3d(0, 0, 0) scale(1.185);
+    transform: translate3d(0, 0, 0) scale(1.185);
+    -webkit-transition-property: -webkit-transform, opacity;
+    transition-property: transform, opacity;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms
+}
+
+.modal-img>img {
+    display: block;
+    opacity: 0;
+    max-width: 100%;
+    max-height: 100%;
+    background-image: @img-loader;
+    background-position: 50% 50%;
+    background-repeat: no-repeat
+}
+
+.modal-dialog {
+    padding: 0px 22px;
+}
+
+.modal-active .modal-dialog,
+.modal-active .popup,
+.modal-active>img {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1)
+}
+
+.modal-hd {
+    font-size: 14px;
+    font-weight: 500
+}
+
+.modal-hd .boxTit {
+    font-size: 14px;
+    color: #59c075;
+    border-bottom: 1px solid #b5b5b5;
+    padding-bottom: 14px
+}
+
+.modal-bd {
+    margin: 15px 0;
+    text-align: center
+}
+
+.modal-bd .boxCont {
+    color: #666;
+    text-align: left
+}
+
+.modal-bd input {
+    height: 35px;
+    border: 1px solid #dedede;
+    width: 100%;
+    padding: 0 5px;
+    border-radius: 5px
+}
+
+.modal-bd .box h1 {
+    font-size: 14px
+}
+
+.modal-footer {
+    width: 100%;
+    display: -moz-box;
+    display: -webkit-box;
+    display: box
+}
+
+.modal-footer:empty {
+    display: none
+}
+
+.modal-btn {
+    -moz-box-flex: 1;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    font-size: 14px
+}
+
+.modal-btn:last-child {
+    border-right: 0
+}
+
+.modal-btn span {
+    width: 90%;
+    display: inline-block;
+    border: 1px solid #b5b5b5;
+    padding: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center
+}
+
+.modal-btn span.cancelBtn {
+    padding: 9px 0
+}
+
+.modal-btn span.okBtn {
+    border-color: #59c075
+}
+
+.modal-footer span.cancelBtn {
+    color: #999;
+}
+
+.modal-footer span.okBtn {
+    color: #59c075;
+}
+
+.modal-footer div:first-child {
+    text-align: left
+}
+
+.modal-footer div:last-child {
+    text-align: right
+}
+
+.popup {
+    max-width: 80%;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075);
+    padding: 6px 12px;
+    border-radius: 4px;
+    opacity: 0
+}
+
+.popup-info {
+    background: #3fb4d7
+}
+
+.popup-success {
+    background: #4ca44c
+}
+
+.popup-danger {
+    background: #cb3e3a
+}
+
+.popup-warning {
+    background-color: rgba(0, 0, 0, .85);
+    font-size: 14px;
+}

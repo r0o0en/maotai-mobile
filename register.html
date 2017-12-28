@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>注册</title>
+		
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/alterPassword.css"/>
+		<link rel="stylesheet" type="text/css" href="css/defined/input.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+		
+		<!--<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>-->
+		<script src="js/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/core.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/sha256.min.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+
+	<body>
+
+		<header id="header">
+			<a class="return" href="javascript:goBack('login.html');"></a>
+			<h1>注册</h1>
+		</header>
+		<section class="loading-form">
+			<form autocomplete="off">
+				<div class="input-row ">
+					<label class="required"><i class="ico ico-person"></i></label>
+					<input class="phone user" type="tel" tabindex="1" placeholder="请输入手机账号" />
+					<span><i class="ico ico-x btn-reset-row-input"></i></span>
+				</div>
+				<div class="input-row ">
+					<label class="required"><i class="ico ico-code"></i></label>
+					<input type="text" tabindex="2" placeholder="请输入图形验证码" />
+					<span class="img-code" style="width: 1.4rem;" ><img src=""  style="height: 100%;width: 100%;"/></span>
+				</div>
+				<div class="input-row">
+					<label class="required"><i class="ico ico-code"></i></label>
+					<input type="tel" id="code" tabindex="3" placeholder="请输入手机验证码" />
+					<span class="phone-code"><i class="btn btn-get-code disabled" id="getCode">获取验证码</i></span>
+				</div>
+				<div class="input-row">
+					<label class="required"><i class="ico ico-lock"></i></label>
+					<input class="password" type="password" tabindex="4" placeholder="请输入登录密码" />
+					<span><i class="ico ico-eye btn-eye"></i></span>
+				</div>
+				<div class="input-row">
+					<label><i class="ico ico-person"></i></label>
+					<input class="phone inviter" type="tel" tabindex="5" placeholder="邀请人手机号（非必填）" />
+					<!--<span><i class="ico ico-eye btn-eye"></i></span>-->
+				</div>
+				<p class="find-pass">
+					<a href="login.html">去登录</a>
+				</p>
+				<button class="btn btn-submit" tabindex="6">注<span style="display: inline-block;width: 0.3rem;"></span>册</button>
+			</form>
+		</section>
+		
+		<script type="text/javascript">
+			//注册
+			;(function () {
+				
+				//图片验证码
+				var url_register_getImgCode = getAjaxOrigin()+ '/api/user/getImgCode';
+				//手机验证码
+				var	url_register_getCode = getAjaxOrigin()+ '/api/user/getPhoneCode';
+				//注册
+				var	url_register_setPass = getAjaxOrigin()+ '/api/user/register';
+				
+				// 存储图形验证码
+				$('.img-code img').attr('src',url_register_getImgCode);
+				var lastTime = new Date().getTime();
+		        $(".img-code img").on('click',function () {
+		            var now = new Date().getTime();
+		            if(now - lastTime > 500){
+		            	$('.img-code img').attr('src',url_register_getImgCode+"?t="+now);
+		                lastTime = now;
+		            }
+		        });
+		        
+				var form = $('form'),
+					user = form.find('.user').inputOnlyTel(function (_this,val) {
+						console.log(imgcode.val().length == 4 , val.length == 11 ,imgcode.val().length == 4 && val.length == 11 );
+						if(imgcode.val().length == 4 && val.length == 11 ){
+							codeBtn.removeClass('disabled');
+						}else{
+							codeBtn.addClass('disabled');
+						}
+					}),
+					imgcodeBtn = form.find('.img-code'),
+					imgcode = imgcodeBtn.siblings('input').inputOnlyImgCode(function (_this,val) {
+						console.log(user.val().length == 11 , val.length==4,user.val().length == 11 && val.length==4);
+						if(user.val().length == 11 && val.length==4){
+							codeBtn.removeClass('disabled');
+						}else{
+							codeBtn.addClass('disabled');
+						}
+					}),
+					codeBtn = form.find('.phone-code .btn-get-code').getCode(user,url_register_getCode,imgcode),
+					phonecode = codeBtn.parent().siblings().next('input').inputOnlyCode(),
+					pass = form.find('.password');
+					inviter = form.find('.inviter').inputOnlyTel();
+				
+				//清空账号
+				$('.btn-reset-row-input').resetRowInput();
+				//查看密码
+				$('.btn-eye').eyePassword();
+				
+				form.submit(function (e) {
+					e.preventDefault();
+					if(!user.inputjudgeCellPhone() || !imgcode.inputjudgeImgCode() || !phonecode.inputjudgeCode() || !pass.inputjudgePassword()){
+						return false;
+					}
+					if(inviter.val().length>0 ){
+						if(!inviter.inputjudgeInviter()){
+							return false;
+						}
+					}
+					ajax({
+						url : url_register_setPass,
+						info:'注册',
+						infosuccess:true,
+						data :{
+							phone: user.val(),
+							phoneCode:phonecode.val(),
+							pwd:sha256(pass.val()),
+							tjrPhone:inviter.val()
+						},
+						success:function (data,status,xhr) {
+							setTimeout(function () {
+								location.href = 'login.html';					
+							},1000);
+						}
+					});
+				});
+			}());
+			
+		</script>
+
+	</body>
+	
+</html>

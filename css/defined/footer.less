@@ -1,0 +1,81 @@
+@import '../defined/defined.less';
+
+/*底部*/
+#footer {
+    z-index: 3;
+    background-color: white;
+    border-top:1px solid #e6e6e6;
+    ul {
+        .flex();
+    }
+    li {
+        height: 50px;
+        .flex-int(1);
+        text-align: center;
+    }
+    li.flex-2{
+        .flex-int(2);
+    }
+    p {
+        font-size: 12px;
+        margin: 0;
+    }
+    a{
+        display: block;
+        height: 100%;
+    }
+//  &:before{
+//      content: '';
+//      background-color: #E6E6E6;
+//      position: absolute;top: 0;left: 0;
+//      display: block;width: 100%;height: 1px;
+//  }
+    
+    .ico {
+        margin-top: 3px;
+        width: 24px;
+        height: 24px;
+        padding-top: 0;
+        padding-bottom: 0;
+        display: inline-block;
+        background-image: url(../../image/ico/ico-index.png);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 20px auto;
+        &:before{content: none;}
+    }
+    
+    li.active .ico {
+        background-image: url(../../image/ico/ico-index-active.png);
+    }
+    
+    .ico-commodity {
+        background-position: center 2px;
+    }
+    
+    .ico-integral {
+        background-position: center -24px;
+    }
+    
+    .ico-shopping {
+        background-position: center -48px;
+    }
+    
+    .ico-setting {
+        background-position: center -73px;
+    }
+    .ico-arrow-button{
+        background-image: none;
+        line-height:24px ;
+        text-align:center; 
+        &:before{
+            position: relative;top: auto;left: auto;
+            box-sizing: content-box;
+            content: '';
+            display: inline-block;width: 0;height: 0;
+            border-color: #333 transparent transparent transparent;
+            border-width: 6px 4px  0 4px;
+            border-style: solid solid none solid;
+        }
+    }
+}

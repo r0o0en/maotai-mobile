@@ -1,0 +1,102 @@
+@import './defined.less';
+
+input:not([type="radio"]){
+    -webkit-appearance: none;
+    -webkit-appearance: none!important;
+}
+input{
+    -webkit-tap-highlight-color: rgba(255,0,0,0);
+    &[type~='text'],
+    &[type~='password'],
+    &[type~='tel'],
+    &[type~='number'],
+    &[type~='email'],
+    {
+        
+    } 
+    &.no-bd{
+        border-color: transparent;
+    }
+    &.error{
+       border-color: #FF0000;
+       .box-shadow(inset 0 0 2px #FF0000);
+    }
+    &.radius{
+        .border-radius(4px);
+    }
+    &.succsess{
+        
+    }
+}
+.samsung input,
+.ios input{
+    line-height: 1px !important;
+}
+.style(){
+    display: inline-block;
+    outline:none;
+    border: none;
+    padding: 0.16rem;
+    font-size: 0.28rem;
+    min-width: 0;
+    width: auto;
+    max-height: 100%;
+}
+
+input,
+textarea{
+    &::-webkit-input-placeholder {
+        .style();
+    }
+    &::-moz-placeholder {
+        .style();
+    }
+    &::-ms-input-placeholder {
+        .style();
+    }
+}
+input[type~='text'],
+input[type~='password'],
+input[type~='tel'],
+input[type~='number'],
+input[type~='email'],
+p button,
+p button.btn,
+p label{
+    .style();
+}
+p label{
+    
+    padding: 0.16rem 0;
+//  padding: 0rem 0;
+}
+/*
+  select
+ * */
+select{
+    border: none;
+}
+.ios select{
+    /*将默认的select选择框样式清除*/
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    /*在选择框的最右侧中间显示小箭头图片*/
+    background: url(../../image/ico/select-arrow.png) no-repeat scroll right center transparent;
+    /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+    padding-right: 16px !important;
+    /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+    &::-ms-expand { display: none; }
+}
+.ios select.btn-green{
+    color: white;
+    background-color: @main-color;
+    background-image: url(../../image/ico/select-arrow-white.png);
+}
+/*
+ * 禁用
+ */
+.disabled{
+  background-color: #ccc;
+  color: #999;
+}

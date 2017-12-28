@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>登录</title>
+		
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/alterPassword.css"/>
+		<link rel="stylesheet" type="text/css" href="css/defined/input.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+		
+		<!--<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>-->
+		<script src="js/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/core.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/sha256.min.js" type="text/javascript" charset="utf-8"></script>
+		
+	</head>
+
+	<body>
+
+		<header id="header">
+			<!--<a class="return" href="javascript:history.go(-1);"></a>-->
+			<h1>登录</h1>
+		</header>
+		<img class="login-logo" src="image/login/login-logo.png"/>
+		<section class="loading-form">
+			<form autocomplete="off">
+				<div class="input-row ">
+					<label><i class="ico ico-person"></i></label>
+					<input type="tel" id="user" tabindex="1" placeholder="登录账号" />
+					<span><i class="ico ico-x btn-reset-row-input"></i></span>
+					<p class="border"></p>
+				</div>
+				<div class="input-row">
+					<label><i class="ico ico-lock"></i></label>
+					<input type="password" id="password" tabindex="2" placeholder="登录密码" />
+					<span><i class="ico ico-eye btn-eye"></i></span>
+					<p class="border"></p>
+				</div>
+				<button class="btn btn-submit" tabindex="3">登<span style="display: inline-block;width: 0.3rem;"></span>录</button>
+				
+				<p class="find-pass clearfix" style="margin-top: 0;">
+					<a class="fl-l" href="register.html">注册</a>
+					<a class="fl-r" href="findPassword.html">找回密码</a>
+				</p>
+			</form>
+		</section>
+		<script type="text/javascript">
+			var url_login = getAjaxOrigin()+"/api/user/login";
+			/**表单
+			* */
+			var form = $('form'),
+				user = $('#user').inputOnlyTel(),
+				pass = $('#password');
+			//清空账号
+			$('.btn-reset-row-input').resetRowInput();
+			//查看密码
+			$('.btn-eye').eyePassword();
+
+			//表单提交
+			form.submit(function(e) {
+				pass.attr('type', 'password');
+				e.preventDefault();
+				if(!user.inputjudgeCellPhone()){
+					return false;
+				}
+				if(!pass.inputjudgePassword()){
+					return false;
+				}
+				
+				ajax({
+					url : url_login,
+					info:'登录',
+					infosuccess:true,
+					data :{
+						phone: user.val(),
+						pwd: sha256(pass.val()),
+					},
+					success:function (data,status,xhr) {
+						//登录保存cookie
+						loginSaveToken(data);
+						setTimeout(function () {
+							window.location.href="index.html"; 
+						},1000);
+					}
+				});
+			})
+		</script>
+
+	</body>
+	
+</html>

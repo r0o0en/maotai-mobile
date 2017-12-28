@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>订单详情</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css"/>
+		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/order.css" />
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+		<script src="js/scroll/iscroll5-min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/scroll/iscrollAssist.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/address.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/scroll/underscore.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="tpl">
+			<% var item=data;%>
+			<div class="column">
+				<header class="text-right">
+					<% var classname = ['status-red','status-orange','status-blue','status-green','status-red'][item.status] %>
+					<span class="status <%=classname%>" ><%=item.statusText%></span>
+					<span class="fl-l">订单号:<%=item.orderSn%></span>
+				</header>
+				<ul id="listContBox" class="my-list-one">
+					<%for(var j=0;j<item.goodsList.length;j++){ %>
+					<% var li=item.goodsList[j];%>
+					<li class="my-list-li">
+						<a class="my-list-content">
+							<img class="my-list-left" src=<%=getImgurl(li.goodsPic)[0]%> />
+							<div class="my-list-body">
+								<h3><%=li.goodsName%></h3>
+								<p class="p-bottm">
+									<!--<span class="money"><%= returnNumbers(item.orderAmount)%></span>-->
+									<span class="cl-green">x&nbsp;<%=li.total%></span>
+								</p>
+							</div>
+						</a>
+					</li>
+					<% } %>
+				</ul>
+				<footer>
+					<p class="text-over-hide text-right">共<%=item.goodsCount%>件商品 实际支付: <span class="money sun-money"><%= returnNumbers(item.orderAmount)%></span></p>
+					<!--<p class="text-right">
+						<% if(item.status === 0){ %>
+							<a class="btn btn-green" onclick="goPayment(<%=item.id%>)">去支付</a>
+							<a class="btn btn-default" onclick='deleteOrder(<%=item.id%>,"<%=item.orderSn%>")'>取消</a>
+						<% }else if(item.status === 1){ %>
+							<a class="btn btn-green" onclick="modal('已为您通知客服，请耐心等待!')">催促发货</a>
+						<% }else if(item.status === 2){ %>
+							<a class="btn btn-green" onclick='confirmReceipt(<%=item.id%>,"<%=item.orderSn%>")'>确认收货</a>
+						<% } %>
+					</p>-->
+				</footer>
+			</div>
+			<div class="column-two">
+				<ul>
+					<li><label class="lab">添加时间 </label><p><%= parseDate(item.addTime)%></p></li>
+					<li><label class="lab">发货时间 </label><p><%= parseDate(item.deliveryTime) %></p></li>
+					<li><label class="lab">支付时间 </label><p><%= parseDate(item.payTime)  %></p></li>
+				</ul>
+			</div>
+			
+			<div class="column-two">
+				<ul>
+					<li><label class="lab">姓名</label><p><%=item.addressModel.realname%></p></li>
+					<li><label class="lab">收货地址</label><p><%=item.addressModel.provinceText +'-' +item.addressModel.cityText +'-'+item.addressModel.areaText%></p></li>
+					<li><label class="lab">详细地址</label><p><%=item.addressModel.address%></p></li>
+					<li><label class="lab">练习电话</label><p><%=item.addressModel.mobile%></p></li>
+				</ul>
+			</div>
+			
+		</script>
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>订单详情</h1>
+				<div class="right"></div>
+			</header>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<div class="order-details"></div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		
+		<script type="text/javascript">
+			//获取订单列表 
+			var url_getOrderList = getAjaxOrigin() + '/api/order/orderList';
+			
+			//获取订单详情
+			var url_getOrderDetail = getAjaxOrigin() + '/api/order/orderDetail';
+			
+			//取消订单（未付款前） 
+			var url_deleteOrder = getAjaxOrigin() + '/api/admin/order/orderCancel';
+			//确认收货 
+			var url_confirmOrder = getAjaxOrigin() + '/api/admin/order/orderWaitForReceiving';
+			//userId
+			var userId;
+			getSimpleInfo(function (data) {
+				userId = data.data.id;
+			});
+			$(function() {
+				var urld = getQueryData();
+				if(urld.orderId){
+					getOrderDetails(urld.orderId,function (data) {
+						var str = _.template($('#tpl').html());
+						$('.order-details').empty().append(str(data));
+						iscrollContent();
+					});
+				}else{
+					modal('获取订单编号失败');
+				}
+				
+			});
+			function getOrderDetails(id,fun) {
+				//获取订单详情
+				ajax({
+					type:'get',
+					url:url_getOrderDetail,
+					data:{
+						orderId:id
+					},
+					success:function (data) {
+						if(fun){fun(data);}
+					}
+				})
+			}
+			function clickOrderType(event,btn,type) {
+				_this =$(btn);
+				if(_this.hasClass('active')){return false;}
+				_this.siblings().removeClass('active');
+				_this.addClass('active');
+				$('#listContBox').empty();
+				listObj.data.status = type||0;
+				listObj.getList();
+			}
+
+			function deleteOrder(id,sn) {
+				if(!userId){modal('用户操作失败');return false;}
+				if(confirm('确认取消订单【'+sn+'】')){
+					ajax({
+						type:"get",
+						info:'取消订单',
+						url:url_deleteOrder,
+						data:{
+							orderId:id,
+							userId:userId
+						},
+						success:function (data) {
+							$('#listContBox').empty();
+							listObj.getList();
+						}
+					})
+					
+				}
+			}
+			function confirmReceipt(id,sn) {
+				if(!userId){modal('用户操作失败');return false;}
+				if(confirm('确认订单【'+sn+'】已收货？')){
+					ajax({
+						type:"get",
+						info:'确认收货',
+						url:url_confirmOrder,
+						data:{
+							orderId:id,
+							userId:userId
+						},
+						success:function (data) {
+							$('#listContBox').empty();
+							listObj.getList();
+						}
+					})
+					
+				}
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+		
+		<title>优品区</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/footer.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+
+		<script src="js/scroll/iscroll5-min.js"></script>
+		<script src="js/scroll/iscrollAssist.js"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/scroll/paging.js"></script>
+		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<script type="text/template" id="tpl">
+			<%for(var i=0;i<data.length;i++){ %>
+			<% var item=data[i];%>
+			<li class="my-list-li">
+				<a class="my-list-content" href="goodsDetails.html?id=<%=item.id%>" >
+					<img class="my-list-left" src="<%= getImgurl(item.goodsPics)[0]%>">
+					<div class="my-list-body">
+						<h3><%=item.goodsName%></h3>
+						<!--<p><span class="stamps-subsidies"><mark class="text">补贴粮票</mark><mark class="number">100%</mark></span></p>-->
+						<p class="p-bottm">
+							<span class="money"><%= returnNumbers(item.price)%></span>
+							<% if(item.price != item.marketPrice){ %>
+							<del>￥<%=item.marketPrice.toFixed(2)%></del>
+							<% } %>
+							<span class="btn-add-trolley" onclick="addCart(<%=item.id%>)">+</span>
+						</p>
+					</div>
+				</a>
+			</li>
+			<%}%>
+		</script>
+		
+		<script type="text/template" id="classify">
+			<li>
+				<p data-categoryId="">所有</p>
+			</li>
+			<%for(var i=0;i<data.length;i++){ %>
+			<% var item=data[i];%>
+				<li>
+					<p data-categoryId="<%=item.id%>"><%=item.categoryName%></p>
+				</li>
+			<%}%>
+		</script>
+			
+
+		<div class="purseList">
+			<header id="header">
+				<!--<a class="return" href="javascript:history.go(-1);"></a>-->
+				<h1>优品区</h1>
+			</header>
+			<footer class="remove-height" id="footer">
+				<ul>
+					<li class="active">
+						<a>
+							<span class="ico ico-commodity"></span>
+							<p>优品区</p>
+						</a>
+					</li>
+					<li>
+						<a href="integral.html">
+							<span class="ico ico-integral"></span>
+							<p>积分区</p>
+						</a>
+					</li>
+					<li>
+						<a href="cart.html">
+							<span class="ico ico-shopping"></span>
+							<p>购物车</p>
+						</a>
+					</li>
+					<li>
+						<a href="setting.html">
+							<span class="ico ico-setting"></span>
+							<p>设置</p>
+						</a>
+					</li>
+				</ul>
+			</footer>
+			<div class="my-select remove-height">
+				<p class="my-select-info">
+					<span id="categoryName">所有</span>
+					<a class="my-select-google">
+						<span>分类</span>
+						<span class="ico ico-arrow-button"></span>
+					</a>
+				</p>
+				<div class="my-select-body">
+					<input type="hidden" name="categoryId" id="categoryId" value="" />
+					<ul class="my-select-ul">
+						<!--<li><p>茅台酒</p></li>
+						<li>
+							<p>一级分类</p>
+							<ul>
+								<li><p>二级分类</p></li>
+								<li>
+									<p>二级分类</p>
+									<ul>
+										<li><p>三级分类</p></li>
+									</ul>
+								</li>
+							</ul>
+						</li>-->
+					</ul>
+					<button type="button"  id="seek" class="btn btn-green wd-all">确认</button>
+				</div>
+			</div>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<div id="pulldown">
+							<div><span id="pulldown-label">下拉刷新</span></div>
+						</div>
+						<div class="content">
+							<ul id="listContBox" class="my-list-one">
+								<!--<li class="my-list-li">
+									<a class="my-list-content">
+										<img class="my-list-left" src="image/test/sp01.jpg">
+										<div class="my-list-body">
+											<h3>53度茅台迎宾酒（2013款）500m*6瓶 酒厂直供</h3>
+											<p><span class="stamps-subsidies"><mark class="text">补贴粮票</mark><mark class="number">100%</mark></span></p>
+											<p class="p-bottm">
+												<span class="money"><small>￥</small><big>4.431</big><small>.22</small></span>
+												<del>￥12222.00</del>
+												<span class="btn-add-trolley">+</span>
+											</p>
+										</div>
+									</a>
+								</li>-->
+							</ul>
+						</div>
+						<div id="pullup">
+							<div><span id="pullup-label">上拉加载</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			
+//			$('.purseList').on('touchmove', function(evt) {
+//				console.log(evt);
+//				evt.stopPropagation();
+//			});
+			
+			//商品列表
+			var url_getGoodsList = getAjaxOrigin() + "/api/goods/getGoodsList";
+			//商品详情
+			var url_getGoodsDetails = getAjaxOrigin() + "/api/goods/getGoodsDetail";
+			//商品分类
+			var url_getGoodsClassify = getAjaxOrigin() + "/api/goods/getGoodsCategory";
+			//商品分类
+			var url_tokenLogin = getAjaxOrigin() + "/api/user/loginByToken";
+			
+			
+			$(function() {
+				var urld = getQueryData();
+				if(urld.jlToken && !!!Cookies.get('token')){
+					ajax({
+						type:"get",
+						url:url_tokenLogin,
+						data:{
+							jlToken:urld.jlToken
+						},
+						success:function(data){
+							if(data.data && data.data.token){
+								Cookies.set('token',data.data.token);
+							}
+							setTimeout(function () {
+								location.href = 'index.html';
+							},100);
+						}
+					})
+					return false;
+				}
+				
+				//获取商品分类
+				ajax({
+					type:'get',
+					url:url_getGoodsClassify,
+					data:{pid:0},
+					success:function(data){
+						var str = _.template($('#classify').html());
+						$('.my-select-ul').empty().append(str(data));
+					}
+				})
+				
+				/*
+				 商品列表
+				 * */
+				//buyType 0：现金 1：积分
+				var ops = {
+					wrapper: $("#wrapper"),
+					listContBox: $('#listContBox'),
+					data: {
+						buyType: 0
+					},
+					tpl: $('#tpl').html(),
+					url: url_getGoodsList
+				}
+				var listObj = list.init(ops);
+				
+				/*
+				  	点击查询商品分类
+				 * */
+				$('.my-select').on('mousedown mousemove', function(e) {
+					e.stopPropagation();
+				})
+				$('.my-select .my-select-info').on('click', '.my-select-google', function(e) {
+					var _this = $(this);
+					_this.parent().siblings('.my-select-body').toggleClass('active');
+				})
+				$('.my-select-ul').on('click', 'p', function(e) {
+					var _this = $(this);
+					_this.parents('.my-select-ul').find('p').removeClass('active');
+					_this.addClass('active');
+					if(_this.siblings('ul').length > 0) {
+						_this.siblings('ul').toggle();
+					}
+					$('#categoryId').val(_this.attr('data-categoryId'));
+					$('#categoryId').attr('data-name',_this.text());
+//					var categoryId = _this.attr('data-categoryId');
+//					listObj.reset({
+//						categoryId:categoryId
+//					})
+				})
+				//确定按钮
+				$('#seek').on('click',function (e) {
+					listObj.reset({
+						categoryId:$('#categoryId').val()
+					});
+					$('#categoryName').text($('#categoryId').attr('data-name'));
+					$('.my-select-body').removeClass('active');
+				})
+				
+			})
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,226 @@
+	<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>收银台</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/order.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />-->
+		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/pages/cart.css" />-->
+		<!--<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css"/>-->
+		<link rel="stylesheet" type="text/css" href="js/password/sixpass.css"/>
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+		
+
+		<script src="js/scroll/iscroll5-min.js"></script>
+		<script src="js/scroll/iscrollAssist.js"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<!--<script src="js/scroll/paging.js"></script>-->
+		<!--<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/address.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/core.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/sha256.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/password/sixpass.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">			
+			.fx {
+				line-height: 30px;
+				font-size: 0.3rem;
+				margin: 5px auto;
+			}
+			
+			img {
+				vertical-align: middle;
+				display: block;
+				float: left;
+				width: 30px;
+				height: 30px;
+				margin: 0 10px;
+			}
+		</style>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="tpl">
+			<%for(var i=0;i<data.length;i++){ %>
+			<% var item=data[i];%>
+			<li class="fx block">
+				<input type="radio" id="<%=item.paymentCode%>" name="payType" <%= item.paymentCode == 'balance'?'checked':'' %>  value="<%=item.paymentCode%>" />
+				<label for="<%=item.paymentCode%>">
+					<img src=<%= item.paymentCode =='alipay'? 'image/ico/zfb.png':'image/alterPassword/logo.png' %> /><%=item.paymentName%>
+					<%if(item.paymentCode == 'balance'){ %>
+						<span class="cl-red">（<%= returnNumbers(item.balance) %>）</span>
+					<%}%>
+				</label>
+			</li>
+			<%}%>
+		</script>
+
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>收银台</h1>
+				<div class="right"></div>
+			</header>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<div class="column">
+							<p class="text-over-hide">实际支付: <span class="money sun-money fl-r">0.00</span></p>
+						</div>
+						
+						<div class="column" >
+							<header>选择<span class="cl-red">支付方式</span></header>
+							<ul id="listContBox" class="pay-type-list">
+								<!--<li class="fx block">
+									<input type="checkbox" id="zfb" name="payType" checked value="zfb"/>
+									<label for="zfb">
+										<img src="image/alterPassword/logo.png"/>支付宝
+									</label>
+								</li>-->
+							</ul>
+						</div>
+
+						<button onclick="pay()" class="btn btn-green btn-lg wd-all " id="pay" disabled style="padding: 0.2rem;" onclick="submitOrder()">确定支付</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//获取订单详情
+			var url_getOrderDetail = getAjaxOrigin() + '/api/order/orderDetail';
+			//支付列表
+//			var url_getPayTypeList = getAjaxOrigin() + '/app/pay/payList';
+			var url_getPayTypeList = getAjaxOrigin() + '/api/wallet/payList';
+			//支付宝支付
+			var url_getPayZFB = getAjaxOrigin() + '/app/pay/aliPay';
+			//查询支付
+			var url_getPayStatus = getAjaxOrigin() + '/app/pay/queryOrderPaymentStatus';
+			//使用余额支付
+			var url_getPayYuE= getAjaxOrigin() + '/api/wallet/payByBalance';
+
+			
+			var urld = getQueryData();
+			$(function() {
+				iscrollContent();
+				if(urld.orderId) {
+					getOrderDetail(urld.orderId, function(data) {
+						alertPayOrderHtml(data.data);
+					});
+					ajax({
+						type:'get',
+						info:"查询支付",
+						url:url_getPayStatus,
+						data:{
+							orderId:urld.orderId
+						},
+						success:function(data){
+							console.log(data);
+						}
+						
+					})
+				}
+				ajax({
+					type:'get',
+					info: '获取支付列表',
+					url: url_getPayTypeList,
+					success: function(data) {
+						var str = _.template($('#tpl').html());
+						$('#listContBox').empty().append(str(data));
+					}
+				})
+			});
+
+			function alertPayOrderHtml(data) { //改变页面的HTML
+				$('.sun-money').html(returnNumbers(data.orderAmount));
+				$('#pay').removeAttr('disabled');
+			}
+
+			function pay() {
+				var btn = $('#pay');
+				if(btn.is(':disabled')) {
+					return false;
+				}
+				var payType = $('.fx input').filter(':checked').val();
+				if(payType =="balance"){//余额
+					getExistPayPass(function (data) {
+						var sixPass = appendSixPass(function(sixpass,wp){
+							wp.remove();
+							//检校支付
+							judgePayPass(sixpass,function (data) {
+								var pwdToken = data.data.pwdToken;
+								ajax({
+									info:'余额支付',
+									infosuccess:true,
+//									headers:{
+//										'Content-Type':'application/json'
+//									},
+									url:url_getPayYuE,
+									data:{
+										pwdToken:pwdToken,
+										orderId:urld.orderId
+									},
+									success:function(data){
+										location.href ='orderList.html?status=1';
+									}
+								})
+							});
+						});
+						sixPass.show();
+					},'?&beforepage=payment&orderId=' + urld.orderId);
+				}else if(payType =="alipay"){//支付宝
+					ajax({
+						type:'get',
+						url:url_getPayZFB +'?orderId='+urld.orderId,
+						success:function(data){
+							if(data.code==200){
+								$('body').append(data.msg);			
+							}
+						}
+					})
+//					location.href = url_getPayZFB +'?orderId='+urld.orderId;
+				}
+				
+			}
+
+			function getOrderDetail(id, fun) { //获取订单详情
+				ajax({
+					type: 'get',
+					url: url_getOrderDetail,
+					info: '订单详情',
+					data: {
+						orderId: id,
+					},
+					success: function(data) {
+						if(fun) {
+							fun(data)
+						}
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

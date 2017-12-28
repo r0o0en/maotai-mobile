@@ -1,0 +1,174 @@
+/*
+   注意：
+    1、所有font-size/line-height/width/height均以rem做单位
+    2、.btn 必须为 inline-block / block 
+  
+   使用：
+    1、 .btn 默认有圆角、有边框 有背景  @color-default 和 @color-active 为border和font颜色 @color为无效属性
+    2、 .btn-no-bd 不显示边框 
+    3、 .btn-no-bg 不显示背景
+    
+  定义新的颜色：
+    .btn-blue{
+        .defined-btn(@color-default,@color-active,@color:white);        
+    }
+  定义新的大小：
+ * */
+
+
+
+.btn{
+    cursor:pointer;
+    display: inline-block;
+    text-align: center;
+    padding: 0 0.15rem;
+    border-width: 0; 
+    &:not(.no-radius){
+        @border-radius:4px;
+        -webkit-border-radius: @border-radius;
+        -moz-border-radius: @border-radius;
+        border-radius: @border-radius;
+    }
+    //禁止双击选中
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    //禁止双击选中-早期浏览器
+    user-select: none;
+    //移动端让背景框不显示
+    &,&:active{
+        -webkit-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -moz-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -ms-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -o-tap-highlight-color:rgba(0, 0, 0, 0);  
+        tap-highlight-color:rgba(0, 0, 0, 0);  
+    }
+    //禁用模式
+    &.disabled,
+    &[disabled]{
+        &,&:active{
+            -webkit-box-shadow: none !important;
+            -moz-box-shadow: none !important;
+            box-shadow: none !important;
+            background-color: #ccc !important;color: #999 !important;border-color: #ccc !important;            
+        } 
+    }
+    &[disabled = 'false']{cursor: pointer;}
+    //:active
+    &:active{
+      -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    }
+    
+}
+//无背景风格
+.btn-no-bg{
+    //模拟边框
+    border-width: 1px;
+    border-style: solid;
+    &,&:active{
+        background: none;    
+    }
+}
+//无边框风格
+.btn-no-bd{
+    border: none;
+}
+.btn{
+    //字体大小、pd、行高、高度:auto
+    .defined-btn-size(0.24rem,0.06rem 0.2rem,1.6);
+    &.wd-all{display: block;width: 100%;margin-left:auto;margin-right:auto;}
+}
+.btn-sm{
+    //字体大小、pd、行高、高度:auto
+    .defined-btn-size(0.28rem,0.06rem 0.2rem,1.6);
+}
+.btn-lg{
+    //字体大小、pd、行高、高度:auto
+    .defined-btn-size(0.42rem,0.2rem 0.2rem,1.6);
+}
+.btn{
+    //默认的颜色、active
+    .defined-btn-color-font(#333);
+    .defined-btn-color(#ccc,transparent,#adadad,#e6e6e6);
+}
+.btn-default{
+    border-width:1px;
+    border-style: solid;
+    //默认的颜色、active
+    .defined-btn-color(#ccc,white);
+}
+.btn-blue{
+    //默认的颜色、active
+    .defined-btn-color-font();
+    .defined-btn-color(#2e6da4,#337ab7);
+}
+.btn-red{
+    //默认的颜色、active
+    .defined-btn-color-font();
+    .defined-btn-color(#f81131,#ff0000);
+}
+.btn-green{
+    //默认的颜色、active
+    .defined-btn-color-font();
+    .defined-btn-color(#019739,#019739);
+}
+.btn-yellow{
+    //默认的颜色、active
+    .defined-btn-color-font(#af3e00);
+    .defined-btn-color(#f8d821);
+}
+.btn-orange{
+    //默认的颜色、active
+    .defined-btn-color-font();
+    .defined-btn-color(#f2b92e);
+}
+
+/*
+    函数声明
+ * */
+.defined-btn-color-font(@ft-cl:white,@ft-cl-on:@ft-cl,){ //btn的字体颜色
+    color: @ft-cl;
+    &:active{
+        color: @ft-cl;
+    }
+}
+
+.defined-btn-color(@bd-cl,@bg-cl:@bd-cl,@bd-cl-on:darken(@bd-cl,10%),@bg-cl-on:darken(@bg-cl,10%)){ //btn的边框颜、背景色、box-shadow颜色
+    border-color: @bd-cl;
+    background-color: @bg-cl;
+    &:active{
+        border-color: @bd-cl-on;
+        background-color: @bg-cl-on;
+//      @box-cl:darken(@bg-cl,50%);
+//      @h:hsvhue(@box-cl);
+//      @s:saturation(@box-cl);
+//      @v:hue(@box-cl);
+//      @box-color:hsva(@h,@s,@v,0.125);
+//      @box-shadow:inset 0 3px 5px @box-color;
+//      -webkit-box-shadow: @box-shadow;
+//      -moz-box-shadow: @box-shadow;
+//      box-shadow: @box-shadow;
+    }
+}
+.defined-btn-size(@font-size,@pd,@line-hei,@hei:auto){
+    font-size: @font-size;
+    height: @hei;
+    line-height: @line-hei;
+    padding: @pd;
+    //背景风格
+    &.btn-bg{}
+    //无边框风格
+    &.btn-no-bd{
+        line-height: @line-hei;
+    }
+}
+
+/*
+ darken(color,%);
+ 减少一个颜色的明度在奥软的颜色空间的绝对数量（变黑）。
+ hsla 
+ 通过色相 (hue)，饱和度 (saturation)，亮度 (lightness)，以及 alpha 四种值 (HSLA) 创建透明的颜色对象。
+ * */

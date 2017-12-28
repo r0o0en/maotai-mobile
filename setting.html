@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>设置</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+
+		<script src="js/scroll/iscroll5-min.js"></script>
+		<script src="js/scroll/iscrollAssist.js"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/setting.js"></script>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="myInfo">
+			<% var item = data;%>
+			<img class="fl-l" src="<%=item.headImg||'image/alterPassword/logo.png'%>" />
+				<div class="">
+				<h3 class="text-over-hide"><%=item.trueName||'用户'%><small class="lab"><%=item.rankText||'游客'%></small></h3>
+				<p><%=item.mobile%></p>
+			</div>
+			<a class="right-label" href="myInfo.html"  style="height: 100%;"></a>
+		</script>
+
+		<div class="purseList">
+			<header id="header">
+				<!--<a class="return" href="javascript:history.go(-1);"></a>-->
+				<h1>设置</h1>
+			</header>
+			<footer class="remove-height" id="footer">
+				<ul>
+					<li>
+						<a href="index.html">
+							<span class="ico ico-commodity"></span>
+							<p>优品区</p>
+						</a>
+					</li>
+					<li>
+						<a href="integral.html">
+							<span class="ico ico-integral"></span>
+							<p>积分区</p>
+						</a>
+					</li>
+					<li>
+						<a href="cart.html">
+							<span class="ico ico-shopping"></span>
+							<p>购物车</p>
+						</a>
+					</li>
+					<li class="active">
+						<a>
+							<span class="ico ico-setting"></span>
+							<p>设置</p>
+						</a>
+					</li>
+				</ul>
+			</footer>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div>
+						<section class="column">
+							<ul>
+								<li>
+									<div class="my-info clearfix">
+										<!--<img class="fl-l" src="image/alterPassword/logo.png" />
+										<div class="">
+											<h3 class="text-over-hide">取个名字好难<small class="lab">游客</small></h3>
+											<p >15997448183</p>
+										</div> 
+										<a class="right-label" href=""></a>-->
+									</div>
+								</li>
+							</ul>
+						</section>
+						
+						<section class="column">
+							<ul>
+								<li><a href="shippingAddress.html">收货地址</a><span></span></li>
+								<li><a href="alterPassword.html">登录密码</a><span></span></li>
+								<li><a href="payPassword.html">支付密码</a><span></span></li>
+							</ul>
+						</section>
+						<section class="column">
+							<ul>
+								<li><a href="orderList.html">我的订单</a><span></span></li>
+								<li><a href="myWallet.html">我的钱包</a><span></span></li>
+								<li><a href="myFans.html">我的粉丝</a><span></span></li>
+							</ul>
+						</section>
+						<section>
+							<ul>
+								<li><a onclick="logout()" class="btn btn-green wd-all btn-lg" id="logout">退出登录</a></li>
+							</ul>
+						</section>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			iscrollContent();
+			$(function() {
+				getSimpleInfo(function (data) {
+					var str = _.template($('#myInfo').html());
+					$('.my-info').empty().append(str(data));
+				})
+			})
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,275 @@
+@import 'defined.less';
+//@import 'btn.less';
+/*******************************
+    -------[=初始化]-------
+********************************/
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,  
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+html{
+//  overflow-x: hidden;
+//  overflow-y: auto;
+}
+body{
+//  font-size: 0.12rem;
+    font-size: 0.28rem;
+//  overflow: hidden;
+}
+ul,ol,figure,figcaption{padding: 0;margin:0;}
+ul,ol{list-style: none;}
+table{border-collapse: collapse;}
+td,th{border: 1px solid #ccc;}
+i,em,address{ font-style:normal; }
+input, button, select, textarea ,a{ outline:none; }
+a{
+  color: #666666;
+  text-decoration: none;
+}
+.underline{
+    text-decoration: underline;
+}
+a,.btn{
+    .no-dbclick-select;
+    &,&:focus,&:hover,&:active{
+        outline: none;
+    }
+    //移动端让背景框不显示
+    &,&:active{
+        -webkit-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -moz-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -ms-tap-highlight-color:rgba(0, 0, 0, 0);  
+        -o-tap-highlight-color:rgba(0, 0, 0, 0);  
+        tap-highlight-color:rgba(0, 0, 0, 0);  
+    }
+}
+
+strike{color: #ccc;}
+mark{background-color: transparent;}
+
+body.ios .on-phgd{
+    .phgd();
+}
+/*
+ img
+ * */
+ img {
+     border: none;
+     width: auto;
+     max-width: 100%;
+ }
+.img-all {
+    display: block;
+    width: 100%;
+}
+/*
+ bg
+ * */
+.bg{
+    position: absolute;top: 0;left: 0;z-index: 0;
+    display: block;width: 100%;height: 100%;
+}
+/*
+ 浮动、清楚浮动
+ */
+.clearfix { 
+    *zoom:1;
+    &:after {content: "."; display: block; height:0;clear:both; visibility: hidden;}
+}
+.fl-l{float: left;}
+.fl-r{float: right;}
+.clear-bo{clear: both;}
+/*
+ 本地环境
+ * */
+//悬浮刷新按钮
+.flex-refresh{
+    display: none;
+    position: fixed;right: 5%;bottom: 5%;z-index: 99;
+//  width: 0.6rem;height: 0.6rem;
+    text-align: center;line-height: 1.2;letter-spacing: 2px;
+    background-color: #0066FF;
+    color: white;
+    font-size: 0.25rem;
+    padding: 0.1rem;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+/*
+ 平滑滚动
+ * */
+.smooth-roll,
+.phgd{
+    -webkit-overflow-scrolling: touch; 
+}
+/*
+ 双击选中
+ * */
+.no-dbclick-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -khtml-user-select: none;
+    /*早期浏览器*/
+    user-select: none;
+}
+/*
+ 显示、隐藏
+ * */
+.show,.block{
+    display: block;
+}
+.show-inline,.inline{
+    display: inline;
+}
+.show-inline-block,.inline-block{
+    display: inline-block;
+}
+.hide{
+    display: none;
+}
+
+/*
+ 文本排列
+ * */
+
+.text-cenner {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.text-left {
+    text-align: left;
+}
+
+/*
+ 背景
+ * */
+.bg-white{
+    background-color: white;
+}
+.bg-ccc{
+    background-color: #ccc;
+}
+.bg-eee{
+    background-color: #eee;
+}
+/*
+ 字体颜色
+ * */
+.cl-main{color: @main-color;}
+.cl-white{color: white;}
+.cl-999{color: #999;}
+.cl-red{color: #FF0000;}
+.cl-green{ color:#009c3b};
+/*
+ 下划线、模拟下划线
+ * */
+.underline {
+    text-decoration: underline;
+}
+.underline-red{
+    border-bottom: 1px solid red;
+}
+
+/*
+ flex 弹性布局
+ * */
+.flex{
+    .flex();
+}
+.flex-number(1);
+.flex-number(2);
+.flex-number(3);
+.flex-number(4);
+
+/*
+预定义padding、margin
+* */
+.defined-padding(@val,@unit:rem){
+    //@rem:escape("@{val}@{unit}");
+    .padding-@{val}{
+        padding: @val;
+    }
+    .padding-l-@{val}{
+        padding-right: @val;
+    }
+    .padding-r-@{val}{
+        padding-right: @val;
+    }
+    .padding-t-@{val}{
+        padding-top: @val;
+    }
+    .padding-b-@{val}{
+        padding-bottom: @val;
+    }
+}
+.defined-margin(@val,@unit:rem){
+    //@rem:escape("@{val}@{unit}");
+    .margin-@{val}{
+        margin: @val;
+    }
+    .margin-l-@{val}{
+        margin-right: @val;
+    }
+    .margin-r-@{val}{
+        margin-right: @val;
+    }
+    .margin-t-@{val}{
+        margin-top: @val;
+    }
+    .margin-b-@{val}{
+        margin-bottom: @val;
+    }
+}
+.pd-rem-d2{padding: 0.2rem;}
+.pd-rem-d3{padding: 0.3rem;}
+.pd-rem-d4{padding: 0.4rem;}
+
+
+/*
+ table
+ * */
+table{
+  border-collapse: collapse;/* 边框合并属性  */
+}
+table,thead,tbody,tfoot,tr{
+    width: 100%;
+}
+td,th{
+    line-height: 2;
+    padding: 0.1rem 0;
+    border:none;
+    border-bottom:1px solid #f2f2f2 ;
+    text-align: center;
+}
+tr:nth-child(2n){
+//background-color: #f2f2f2;
+  background-color: rgba(242,242,242,.5);
+}
+th{
+  font-weight: 500; 
+}
+td{
+  color: #666;
+}
+
+/* form  input*/
+input,
+.samsung input,
+.ios input{
+    line-height: 1px !important;
+}

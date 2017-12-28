@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<!--<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">-->
+
+		<title>收货地址</title>
+
+		<link rel="stylesheet" type="text/css" href="./css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
+		<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css" />
+
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js"></script>
+
+		<script src="js/scroll/iscroll5-min.js"></script>
+		<script src="js/scroll/iscrollAssist.js"></script>
+		<script src="js/scroll/underscore.js"></script>
+		<script src="js/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/setting.js"></script>
+		<script src="js/address.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body class="bg-eee">
+		<script type="text/template" id="tpl">
+			<%for(var i=0;i<data.length;i++){ %>
+			<% var item=data[i]; %>
+			<table class="address-row <%= item.isDefault == 1?'active':''%> ">
+				<tr>
+					<th class="clearfix" colspan="2">
+						<%if(isOrder){%>
+							<span class="btn btn-blue fl-l" onclick='selectThisAddress(<%=JSON.stringify(item)%>,<%=item.id%>)'>选择当前</span>
+						<%}%>
+						<span class="btn btn-orange fl-r" onclick='alertAddress(<%=JSON.stringify(item)%>)'>修改</span>
+						<!--<span class="btn btn-blue fl-r isDefault-yes ">取消默认</span>-->						
+						<span class="btn btn-green fl-r is-default" onclick="isDefault(event,this,<%=item.id%>)">设为默认</span>	
+						<!--<span class="btn btn-red fl-r" onclick="deleteAddress(<%=item.id%>)">删除</span>-->
+					</th>
+				</tr>
+				<tr>
+					<td>收货人：</td>
+					<td><%=item.realname%></td>
+				</tr>
+				<tr>
+					<td>手机号码：</td>
+					<td><%=item.mobile %></td>
+				</tr>
+				<tr>
+					<td>省市区：</td>
+					<td><%=item.provinceName%>-<%=item.cityName%>-<%=item.areaName%></td>
+				</tr>
+				<tr>
+					<td>详细地址：</td>
+					<td><%=item.address%></td>
+				</tr>
+			</table>
+
+			<%}%>
+		</script>
+
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>收货地址</h1>
+				<span class="right new-address">+</span>
+			</header>
+			<div id="list-wrap">
+				<div id="wrapper">
+					<div id="listContBox">
+						<!--<table class="address-row">
+							<tr>
+								<th class="clearfix" colspan="2">
+									<span class="btn btn-orange fl-r">修改</span>
+									<span class="btn btn-blue fl-r">取消默认</span>
+									<span class="btn btn-green fl-r">设为默认</span>
+									<span class="btn btn-red fl-r">删除地址</span>
+								</th>
+							</tr>
+							<tr>
+								<td>收货人：</td>
+								<td>一二三四五</td>
+							</tr>
+							<tr>
+								<td>手机号码：</td>
+								<td>15997448183</td>
+							</tr>
+							<tr>
+								<td>省市区：</td>
+								<td>江西省-黄冈市-龙泉村</td>
+							</tr>
+							<tr>
+								<td>详细地址：</td>
+								<td>江西省黄冈市龙泉村牌坊进门左转拐三个弯等红绿灯就到了</td>
+							</tr>
+						</table>-->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			//是否为确认订单页过来
+			var isOrder = false;
+			//获取url带参
+			var urld = getQueryData();
+			if(urld.beforepage && urld.data){
+				isOrder = true;
+				//是订单页跳转过来选择的
+			}
+			$(function() {
+				iscrollContent();
+				//加载 刷新 收货地址列表   修改默认 新增 更改后 都将刷新
+				refreshAddressList();
+				//初始化新增弹窗
+				newAddressHtml();
+			});
+			function selectThisAddress(address,id){
+				if(window.confirm('你确定要选择当前收货地址吗？')){
+					if(urld.cart){						
+						var href = 'orderSettlement.html?cart=true&data=' + encodeURI(urld.data)+'&address='+id;						
+					}else{
+						var href = 'orderSettlement.html?data=' + encodeURI(urld.data)+'&address='+id;						
+					}
+//					var href = 'orderSettlement.html?data=' + urld.data+'&address='+JSON.stringify(address);
+					location.href = href;
+	                return true;
+	             }else{
+	                return false;
+	             }
+			}
+		</script>
+	</body>
+
+</html>

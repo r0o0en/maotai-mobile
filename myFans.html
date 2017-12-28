@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" id="viewport">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="telephone=no" name="format-detection" />
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!--test缓存-->
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		
+		<title>推荐代理商</title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css"/>
+		<link rel="stylesheet" type="text/css" href="css/defined/input.css"/>
+		
+		<script src="js/zepto/zepto.min.js"></script>
+		<script src="js/modal/modal.js"></script>
+		<script src="js/aze_lib.js" ></script>
+		
+		<script src="js/scroll/iscroll5-min.js" ></script>
+		<script src="js/scroll/iscrollAssist.js" ></script>
+		<script src="js/scroll/underscore.js" ></script>
+		<script src="js/scroll/paging.js" ></script>
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.main-head{
+				padding: 0.4rem 0.2rem;background-color: #eeeeee;
+			}
+			#fansNumber{
+				color: #666;
+				font-size: 0.34rem;
+			}
+			.seek-row input{margin-right: 0;}
+			#invitebtn{margin-right: 0.2rem;}
+			th{color: #111;font-size: 0.34rem;padding: 0.2rem 0.1rem;font-weight: 600;}
+			td{color: #999;}
+			td img{
+				display: block;
+				width: 0.8rem;height: auto;
+				margin: 0 auto;
+				-webkit-border-radius: 4px;
+				-moz-border-radius: 4px;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<script type="text/template" id="tpl">
+		    <%for(var i=0;i<data.length;i++){ %>
+		    <% var item=data[i];%>
+		    <tr>
+				<td><img src="image/alterPassword/ico-person.png" /></td>
+				<td>
+					<span><%=item.rankText%></span><br />
+					<span><%=item.mobile%></span>
+				</td>
+				<% var time = parseDate(item.regTime).split(/\s/);%>
+				<td>
+					<span><%=time[0]%></span><br />
+					<span><%=time[1]%></span>
+				</td>
+			</tr>
+		    <%}%>
+		    
+		</script>
+		
+		<div class="purseList">
+			<header id="header">
+				<a class="return" href="javascript:history.go(-1);"></a>
+				<h1>推荐代理商</h1>
+			</header>
+			<div class="main-head remove-height">
+				<div class="seek-row">
+					<span class="btn hide">我的邀请人:</span>
+					<input id="invite" type="tel" placeholder="我的邀请人" />
+					<span id='invitebtn' class="btn btn-green font" >添加</span>
+					<!--<input id="tel" type="tel" placeholder="查询粉丝手机号" />
+					<span id='seek' class="btn btn-green font" >查询</span>-->
+				</div>
+				<p id="fansNumber" class="" style="margin-bottom: 0;padding: 0 0.2rem;">我的粉丝： <span class="cl-red"> 0 </span></p>
+			</div>
+			<div id="list-wrap">
+			    <div id="wrapper" >
+			    	<div>
+				    	<div id="pulldown">
+							<div><span id="pulldown-label">下拉刷新</span></div>
+						</div>
+						<table class="content">
+							<thead>
+								<tr>
+									<th>头像</th>
+									<th>用户信息</th>
+									<th>注册时间</th>
+								</tr>
+							</thead>
+							<tbody id="listContBox">
+								<!--<tr>
+									<td><img src="image/alterPassword/logo.png"/></td>
+									<td>
+										<span>13190877277</span><br />
+										<span>贾庆峰</span>
+									</td>
+									<td>
+										<span>2017-10-30</span><br />
+										<span>14:48:24</span>
+									</td>
+								</tr>-->
+							</tbody>
+						</table>	
+						<div id="pullup" >
+							<div><span id="pullup-label">上拉加载</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//获取粉丝列表 url
+			var url_getFansList = getAjaxOrigin() + '/api/myself/fansDataList';
+			// 获取 我的邀请人 url 
+			var url_getInviter = getAjaxOrigin() + '/api/myself/fansData';
+			// 设置 我的邀请人 url 
+			var url_setInviter = getAjaxOrigin() + '/api/myself/addPidByMobile';			
+			
+			
+			$(function(){
+				//列表参数
+	    	    var listObj,
+	    	    	ops = {
+		    	        wrapper: $("#wrapper"),
+		    	        listContBox:$('#listContBox'),
+		    		    tpl:$('#tpl').html(),
+		    			url: url_getFansList
+		    		};
+		    	
+				//先获取是否已有 我的邀请人 和粉丝数量
+		    	ajax({
+		    		type:'get',
+		    		url:url_getInviter,
+		    		success:function(data){
+		    			if(data.data.fansCount){
+		    				$('#fansNumber').html('拥有粉丝： <span class="cl-red "> '+data.data.fansCount+' </span> 位')
+		    			}
+		    			if(data.data.pidMobile){
+		    				$('#invite').val(data.data.pidMobile+'【'+data.data.pidRankText +'】').attr({'disabled':'disabled'}).prev().show();
+		    				$('#invitebtn').hide();
+		    			}
+		    			listObj= list.init(ops);
+		    		}
+		    	});
+				//先获取是否已有 我的邀请人
+//				getMyInfo(function (data) {
+//					console.log(data,data.data.pid);
+//					if(data.data.pid != 0 ){
+//						$('#invite').hide();
+//						$('#invitebtn').hide();
+//						$('#myInvite').html('<span>我的邀请人：</span><span>'+data.data.name+'</span> <mark>'+data.data.inviterPhone+'</mark>').show();
+//					}
+//					
+//				})
+//				ajax({
+//					url:url_getInviter,
+//					success:function (data) {
+//						if(data.data.inviterId){
+//							$('#invite').hide();
+//							$('#invitebtn').hide();
+//							$('#myInvite').html('<span>我的邀请人：</span><span>'+data.data.name+'</span> <mark>'+data.data.inviterPhone+'</mark>').show();
+//						}
+//						//更新列表
+//						listObj= list.init(ops);
+//					}
+//				})
+				//提交查询
+				var  tel= $('#tel').inputOnlyTel();
+				$('#seek').on('click',function (e) {
+					if(!tel.inputjudgeCellPhone()){
+						return false;
+					}
+					listObj.reset({
+						addRequireData:tel.val()
+					});
+				});
+				
+				//提交 我的邀请人
+				var invite = $('#invite').inputOnlyTel();
+				$('#invitebtn').on('click',function (e) {
+					if(!invite.inputjudgeCellPhone()){
+						return false;
+					}
+					ajax({
+						info:"设置我的邀请人",
+						url:url_setInviter,
+						data:{mobile:invite.val()},
+						success:function () {
+							setTimeout(function () {
+								window.location.href="recommendAgent.html"; 
+							},1000);
+						}
+					})
+				});
+				
+	    	})
+			
+		</script>
+	</body>
+</html>

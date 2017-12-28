@@ -1,0 +1,92 @@
+@import '../defined/defined.less';
+
+
+//幻灯
+.swiper-container {
+    background-color: white;
+    width: 100%;
+    height: 6.8rem;
+}  
+.swiper-wrapper,
+.swiper-slide,
+.swiper-slide img{
+    height: 100%;
+}
+.swiper-slide img{
+    width: 100%;
+    margin: 0 auto;
+    display: block;
+    object-fit: cover;
+}
+
+/*头部 */
+.goods-title-row{
+    
+    p{margin-top: 0.2rem;}
+}
+h1{
+    .text-line-hide();
+    font-size: 0.36rem;
+    font-family: arial,simsun,"microsoft yahei";
+    font-weight: 500;
+    color: #333;
+    min-height: 0.75*1.6*2 + 1 rem;
+}
+.ico-kucun{
+    &:before{background-image: url(../../image/ico/ico-kucun.png);}
+}
+.ico-bottom{
+    &:before{background-image: url(../../image/ico/ico-bottom.png);}
+}
+
+/*
+ 底部
+ * */
+#footer {
+    position: absolute;bottom: 0;left: 0;right: 0;
+    li + li{
+       padding-top: 0;
+        
+    }
+    .btn{
+        line-height: 46px;
+        font-size: 0.36rem;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+    }
+}
+/*
+ 详情*/
+.goods-details-row{
+    display: none;
+    border-top: 1px solid #E6E6E6;
+    img{display: block;max-width: 100%;width: auto;margin: 0 auto;}
+    p{margin: 0.26rem 0;}
+}
+
+body{overflow: hidden;}
+
+.page{
+    position: absolute;top: 0;left: 0;right: 0;bottom: 0;
+    #header ,  #footer{z-index: 99;}
+    #header{
+        position: absolute;top: 0;left: 0;right: 0;
+        height: 0.86rem;
+    }
+    #footer{
+        height: 50px;
+        position: absolute;bottom: 0;left: 0;right: 0;
+    }
+    #body{
+        position: absolute;top: 0.86rem;left: 0;right: 0;bottom: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 30px;
+    }
+    #footer~#body{
+        bottom: 50px;
+        
+    }
+
+} 

@@ -1,0 +1,116 @@
+/*
+ * 弹窗
+ <section class="popup" id="popup1">
+            <div class="popup-wp">
+                <span class="btn-popup-hide">×</span>
+                <div class="popup-body">
+                </div>
+            </div>
+   </section>
+   <section class="popup" id="popup1">
+            <div class="popup-wp">
+                <div class="popup-wrap">
+                 <span class="btn-popup-hide">×</span>
+                    <div class="popup-body">
+                    </div>
+                </div>
+            </div>
+   </section>
+ * 
+ * */
+/*位置*/
+.popups {
+//  padding: 10% 0;
+    overflow: hidden;
+}
+.popup-wp {
+    width: 100%;
+    height: 100%;
+    padding: 10%;
+    overflow: hidden;
+    max-width: 7.5rem;
+    margin: 0 auto;
+    
+}
+@media all and (orientation : landscape) { /*横屏时*/
+    .popup-wp {
+        padding:  0.3rem 10%;    
+    }        
+}
+.popup-body {
+    width: 100%;
+    max-height: 100%;
+    overflow: auto;
+}
+/*基本样式*/
+.popups {
+    &,
+    & * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none;
+}
+
+.popup-wp {
+    position: relative;
+    &>.popup-wrap,
+    &>.popup-body {
+        border: 1px solid #999;
+        -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        -webkit-border-radius: 6px;
+        -moz-border-radius: 6px;
+        border-radius: 6px;
+    }
+}
+
+.popup-body {
+    position: relative;z-index: 1;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    outline: 0;
+    padding: 0.2rem;
+} 
+.popup-content{
+    padding: 0.2rem;
+}
+
+.btn-popup-hide {
+    @btn-w: 0.4rem;
+    cursor: pointer;
+    position: absolute;
+    left: 91%;
+    z-index: 2;
+    display: block;
+    width: @btn-w;
+    height: @btn-w;
+    line-height: @btn-w*0.7;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 100%;
+    text-align: center;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    font-size: @btn-w;
+    font-weight: 100;
+    background-color: #ccc;
+    color: white;
+}
+
+.btn-popup-hide:hover {
+    border-color: #FF0000;
+    background-color: #FF0000;
+    color: white;
+}

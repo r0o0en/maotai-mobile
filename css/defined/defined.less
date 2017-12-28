@@ -1,0 +1,184 @@
+@main-color: #009c3b;
+@service-color: #ff9c00;
+/*
+ 浮动、清楚浮动
+ */
+.clearfix(){  
+    *zoom:1;
+    &:after {content: "."; display: block; height:0;clear:both; visibility: hidden;font-size: 0;}
+}
+/*
+ 平滑滚动
+ */
+.phgd(){
+    -webkit-overflow-scrolling: touch; 
+}
+/*
+ flex  弹性布局
+ * */
+.flex(){
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: flex;
+}
+.flex-number(@num:1) when (@num>0){
+    .flex-@{num}{
+        -webkit-box-flex: @num;
+        -moz-box-flex: @num;
+        flex: @num;
+    }
+}
+.flex-int(@num:1) when (@num>0){
+    -webkit-box-flex: @num;
+    -moz-box-flex: @num;
+    flex: @num;
+}
+/*----- 可见度 -----*/
+.opacity(@d){
+    @dd:@d*100;
+    opacity:@d;
+    filter: alpha(opacity=@dd);
+}
+/*
+ 溢出 隐藏
+ * */
+.over-hide(){overflow: hidden;}  //溢出隐藏
+.text-over-hide(){text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}   //单行文本省略
+.text-line-hide(@line:2){   //文本行数（仅chrome支持）
+    -webkit-line-clamp: @line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+/*
+ 边框 阴影
+ * */
+.box-shadow(@boxshadow){
+    -webkit-box-shadow: @boxshadow;
+    -moz-box-shadow: @boxshadow;
+    box-shadow: @boxshadow;
+}
+/*
+ 圆角
+ * */
+.border-radius(@d){
+    -webkit-border-radius: @d;
+    -moz-border-radius: @d;
+    -ms-border-radius: @d;
+    border-radius: @d;
+}
+.border-radius-t(@d){
+    .border-radius-tl(@d);
+    .border-radius-tr(@d);
+}
+.border-radius-b(@d){
+    .border-radius-bl(@d);
+    .border-radius-br(@d);
+}
+.border-radius-tl(@d) {
+    -webkit-border-top-left-radius: @d;
+    -moz-border-top-left-radius: @d;
+    border-top-left-radius: @d;
+}
+.border-radius-tr(@d) {
+    -webkit-border-top-right-radius: @d;
+    -moz-border-top-right-radius: @d;
+    border-top-right-radius: @d;
+}
+
+.border-radius-bl(@d) {    
+    -webkit-border-bottom-left-radius: @d;
+    -moz-border-bottom-left-radius: @d;
+    border-bottom-left-radius: @d;
+}
+.border-radius-br(@d) {    
+    -webkit-border-bottom-right-radius: @d;
+    -moz-border-bottom-right-radius: @d;
+    border-bottom-right-radius: @d;
+}
+/*
+ 过渡时间
+ transform  过渡
+ duration  持续、持续时间
+ delay  延期、延时
+ origin 原点、起源
+ * */   
+.transition(@d){
+    -webkit-transition: @d;
+    -moz-transition: @d;
+    -ms-transition: @d;
+    -o-transition: @d;
+    transition: @d;
+}
+.transition-duration(@d){
+    -webkit-transition-duration: @d;
+    -moz-transition-duration: @d;
+    -ms-transition-duration: @d;
+    -o-transition-duration: @d;
+    transition-duration: @d;
+}
+.transition-delay(@d){
+    -moz-transition-delay: @d; /* Firefox 4 */
+    -webkit-transition-delay: @d; /* Safari 和 Chrome */
+    -o-transition-delay: @d; /* Opera */
+    transition-delay: @d;
+};
+.transform-origin(@d){
+    -webkit-transform-origin: @d;
+    -moz-transform-origin: @d;
+    -ms-transform-origin: @d;
+    -o-transform-origin: @d;
+    transform-origin: @d;
+}
+
+/*----- 2D转换 -----*/
+.transform(@d){
+    -webkit-transform: @d;
+    -moz-transform: @d;
+    -ms-transform: @d;
+    -o-transform: @d;
+    transform: @d;
+}
+.scale(@d){
+    -webkit-transform: scale(@d);
+    -moz-transform: scale(@d);
+    -ms-transform: scale(@d);
+    -o-transform: scale(@d);
+    transform: scale(@d);
+}
+.rotate(@d){
+    -webkit-transform: rotate(@d);
+    -moz-transform: rotate(@d);
+    -ms-transform: rotate(@d);
+    -o-transform: rotate(@d);
+    transform: rotate(@d);
+}
+.translate(@d){
+    -webkit-transform: translate(@d);
+    -moz-transform: translate(@d);
+    -ms-transform: translate(@d);
+    -o-transform: translate(@d);
+    transform: translate(@d);
+}
+
+/*
+常用 渐变
+ * */
+//从左到右的双色渐变
+.color-gradient-left-right(@cl-bg:#12e2f9,@cl-to:#24fda1){
+    @bg: @cl-bg;//基础颜色
+    @to: @cl-to;//要渐变到的颜色
+    background: @bg;
+    background: -moz-linear-gradient(left, @bg, @to);
+    background: -webkit-gradient(linear, 30% 50%, 100% 50%, from(@bg), to(@to));
+    background: -o-linear-gradient(left, @bg, @to); 
+}
+.color-gradient-top-bottom(@cl-bg:#aa00fb,@cl-to:#8202ef,@start:50% 0%,@end:50% 100%){
+    @bg: @cl-bg;//基础颜色
+    @to: @cl-to;//要渐变到的颜色
+    background: @bg;
+    background: -moz-linear-gradient(left, @bg, @to);
+    background: -webkit-gradient(linear, @start, @end, from(@bg), to(@to));
+    background: -o-linear-gradient(left, @bg, @to); 
+}
