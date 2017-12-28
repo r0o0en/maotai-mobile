@@ -313,7 +313,6 @@ $.fn.alterNumbers = function(n) { /*首页 余额转换*/
 	return this;
 };
 $.fn.alterNumbersTwo = function(n) { /*首页 余额转换 不带￥符号，转万单位*/
-	console.log('----------',n);
 	if(n && n != '0') {
 		n = parseFloat(n).toFixed(2).split('.');
 		var integer = n[0],
@@ -321,7 +320,7 @@ $.fn.alterNumbersTwo = function(n) { /*首页 余额转换 不带￥符号，转
 			str = '<big>',
 			str_integer = '',
 			len = integer.length;
-		var cutlen = 6;
+		var cutlen = 5;
 		if(len>=cutlen){
 			decimal = integer.substring(len-(cutlen-1), len-(cutlen-3));
 			integer = integer.substring(0, len-(cutlen-1));

@@ -62,7 +62,7 @@ function addCart(id, num, fun) {
 function removeCart(arr, fun) { //goodsIdJsonArrays  商品ID的JSON列表,需要中括号[1,2,3]
 	ajax({
 		info: "移出购物车",
-		infosuccess: true,
+//		infosuccess: true,
 		url: url_removeCart,
 		data: {
 			goodsIdJsonArrays: arr,

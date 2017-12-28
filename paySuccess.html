@@ -96,14 +96,13 @@
 							<img src="image/ico/ico-success.png"/>
 							<p class="cl-green">支付成功</p>
 							<p><small class="auto-return-info">5s后返回订单列表</small></p>
-							<p><a class="btn btn-green btn-sm" href="orderList.html">立即返回</a></p>
-							
+							<p><a class="btn btn-green btn-sm" href="orderList.html?status=1">立即返回</a></p>
 						</div>
 						<div class="pay-type pay-error ">
 							<img src="image/ico/ico-error.png"/>
 							<p class="cl-red error-info">支付失败</p>
 							<p><small class="auto-return-info">5s后返回订单列表</small></p>
-							<p><a class="btn btn-green btn-sm" href="orderList.html">立即返回</a></p>
+							<p><a class="btn btn-green btn-sm" href="orderList.html?status=1">立即返回</a></p>
 							
 						</div>
 					</div>
@@ -135,7 +134,7 @@
 					setTimeout(autoReturn,1000);
 				}else{
 					time =5;
-					location.href = "setting.html";
+					location.href = "orderList.html?status=1";
 				}
 				
 			}
