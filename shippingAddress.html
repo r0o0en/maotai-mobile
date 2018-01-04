@@ -75,7 +75,7 @@
 			<header id="header">
 				<a class="return" href="javascript:history.go(-1);"></a>
 				<h1>收货地址</h1>
-				<span class="right new-address">+</span>
+				<span class="right new-address" style="font-size: 26px;">+</span>
 			</header>
 			<div id="list-wrap">
 				<div id="wrapper">
@@ -129,7 +129,7 @@
 			});
 			function selectThisAddress(address,id){
 				if(window.confirm('你确定要选择当前收货地址吗？')){
-					if(urld.cart){						
+					if(urld.cart){
 						var href = 'orderSettlement.html?cart=true&data=' + encodeURI(urld.data)+'&address='+id;						
 					}else{
 						var href = 'orderSettlement.html?data=' + encodeURI(urld.data)+'&address='+id;						

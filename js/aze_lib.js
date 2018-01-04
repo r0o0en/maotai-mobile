@@ -21,7 +21,7 @@ function getOrigin() { //返回项目所在的 origin
 	return location.origin;
 }
 function loginPage(){//跳转登录页
-	parent.location.href = location.origin +'/'+workspace+ '/login.html';
+	location.href = location.origin +'/'+workspace+ '/login.html';
 }
 
 /*
@@ -553,9 +553,8 @@ function goBack(url){
     if ((navigator.userAgent.indexOf('MSIE') >= 0) && (navigator.userAgent.indexOf('Opera') < 0)){ // IE  
         if(history.length > 0){  
             window.history.go( -1 );  
-        }else{  
+        }else{
         	if(url){
-        		alert(1)
             	location.href = url;
             	return false;
             }
@@ -572,7 +571,6 @@ function goBack(url){
                 window.history.go( -1 );  
             }else{  
             	if(url){
-            		alert(1)
             		location.href = url;
             		return false;
             	}
@@ -667,4 +665,13 @@ function replacePage(e,page) {
 	e.preventDefault();
 	window.location.replace(page);
 	return false;
+}
+var judgeIsHMSH = /HMSH/ig.test(navigator.appVersion) || /HMSH/ig.test(navigator.userAgent) ;
+function isHMSH (fun) {
+	if(judgeIsHMSH && fun){fun();}
+	return judgeIsHMSH;
+}
+function noIsHMSH (fun) {
+	if(!judgeIsHMSH && fun){fun();}
+	return !judgeIsHMSH;
 }

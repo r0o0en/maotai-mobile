@@ -23,6 +23,11 @@
 		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
 		<link rel="stylesheet" type="text/css" href="css/pages/order.css" />
 
+		<script type="text/javascript">
+			if(window.name != "orderList"){
+				window.name = "orderList";
+	        }
+		</script>
 		<script src="js/zepto/zepto.min.js"></script>
 		<script src="js/modal/modal.js"></script>
 		<script src="js/aze_lib.js"></script>
@@ -81,7 +86,7 @@
 
 		<div class="purseList">
 			<header id="header">
-				<a class="return" href="setting.html"></a>
+				<a class="return" href="javascript:history.go(-1);"></a>
 				<h1>订单列表</h1>
 				<div class="right"></div>
 			</header>

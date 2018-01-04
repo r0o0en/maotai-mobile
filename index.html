@@ -32,6 +32,7 @@
 		<script src="js/scroll/underscore.js"></script>
 		<script src="js/scroll/paging.js"></script>
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>-->
 	</head>
 
 	<body>
@@ -39,7 +40,7 @@
 			<%for(var i=0;i<data.length;i++){ %>
 			<% var item=data[i];%>
 			<li class="my-list-li">
-				<a class="my-list-content" href="goodsDetails.html?id=<%=item.id%>" >
+				<a class="my-list-content" href="goodsDetails.html?referrer=<%=referrer%>&id=<%=item.id%>&maotaiShare" >
 					<img class="my-list-left" src="<%= getImgurl(item.goodsPics)[0]%>">
 					<div class="my-list-body">
 						<h3><%=item.goodsName%></h3>
@@ -225,7 +226,19 @@
 					tpl: $('#tpl').html(),
 					url: url_getGoodsList
 				}
+				referrer = false;
 				var listObj = list.init(ops);
+//				if(Cookies.get('token')){
+//					//获取用户信息
+//					getMyInfo(function (data) {
+//						referrer = data.data.mobile;
+//						var listObj = list.init(ops);
+//					})					
+//				}else{
+//					var listObj = list.init(ops);
+//				}
+				
+				
 				
 				/*
 				  	点击查询商品分类

@@ -23,7 +23,12 @@
 		<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />
 		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
 		<link rel="stylesheet" type="text/css" href="css/pages/cart.css" />
-
+		<script type="text/javascript">
+			if(window.name != "cart") {
+				window.name = "cart";
+				location.reload();
+			}
+		</script>
 		<script src="js/zepto/zepto.min.js"></script>
 		<script src="js/modal/modal.js"></script>
 		<script src="js/aze_lib.js"></script>
@@ -46,29 +51,29 @@
 						<label for="goodsid<%=item.goodsId%>"></label>
 					</span>
 				</div>
-					<div class="my-list-content">
-						<img class="my-list-left" src="<%= getImgurl(item.goodsPics)[0]%>">
-						<div class="my-list-body" >
+				<a href="goodsDetails.html?referrer=<%=referrer%>&id=<%=item.goodsId%>&maotaiShare" class="my-list-content">
+					<img class="my-list-left" src="<%= getImgurl(item.goodsPics)[0]%>">
+					<div class="my-list-body">
 						<h3><%=item.goodsName%></h3>
-							<p>
-								<small class="cl-999">购买方式：<%= buy_title[item.buyType]%></small>
-							</p>
-							<!--<p><small class="cl-999">品种：单瓶</small></p>-->
-							<div class="p-bottm flex">
-								<div class="flex-1">
-									<span class="money"><%= returnNumbers(item.price)%></span>
-								</div>
-									<div class="cu-quantity">
-										<button class="cu-minus">-</button>
-										<input class="price" type="hidden" name="price" value="<%=item.price.toFixed(2)%>" />
-										<input class="goodsid" type="hidden" name="goodsid" value="<%=item.goodsId%>" />
-										<input class="cu-input" type="number" value="<%=item.total%>" min="0" max="<%=item.stock||0%>">
-										<button class="cu-add">+</button>
-									</div>
-								</div>
+						<p>
+							<small class="cl-999">购买方式：<%= buy_title[item.buyType]%></small>
+						</p>
+						<!--<p><small class="cl-999">品种：单瓶</small></p>-->
+						<div class="p-bottm flex">
+							<div class="flex-1">
+								<span class="money"><%= returnNumbers(item.price)%></span>
+							</div>
+							<div class="cu-quantity">
+								<button class="cu-minus">-</button>
+								<input class="price" type="hidden" name="price" value="<%=item.price.toFixed(2)%>" />
+								<input class="goodsid" type="hidden" name="goodsid" value="<%=item.goodsId%>" />
+								<input class="cu-input" type="number" value="<%=item.total%>" min="0" max="<%=item.stock||0%>">
+								<button class="cu-add">+</button>
 							</div>
 						</div>
-				</li>
+					</div>
+				</a>
+			</li>
 			<%}%>
 		</script>
 
@@ -118,8 +123,7 @@
 					<span class="fx">
 						<input type="checkbox" id="checkedAll"/>
 						<label for="checkedAll"></label>
-					</span>
-					全选
+					</span> 全选
 				</div>
 				<div class="edit-hide flex">
 					<div class="flex-1 sum-price">
@@ -133,7 +137,7 @@
 			</div>
 
 			<div id="list-wrap">
-				<div id="wrapper" >
+				<div id="wrapper">
 					<div class="">
 						<div id="pulldown">
 							<div><span id="pulldown-label">下拉刷新</span></div>
@@ -205,98 +209,113 @@
 		<script type="text/javascript">
 			//计算订单
 			var url_orderSettlement = getAjaxOrigin() + '/api/order/calculateOrder';
-			
+
 			//全选按钮
 			var btnAllChecked = $('#checkedAll');
 			//商品购买类型
-			var buy_class = ['xj','jf'];
-			var buy_title = ['<span style="color: #007AFF;">现金</span>','<span style="color: orange;">积分</span>'];
+			var buy_class = ['xj', 'jf'];
+			var buy_title = ['<span style="color: #007AFF;">现金</span>', '<span style="color: orange;">积分</span>'];
 
-			
 			//iscrollContent();
 			$(function() {
 				var ops = {
 					wrapper: $("#wrapper"),
 					listContBox: $('#listContBox'),
-						tpl: $('#tpl').html(),
-						url: url_getCartList
-					}
-				var listObj= list.init(ops);
-				
+					tpl: $('#tpl').html(),
+					url: url_getCartList
+				}
+				referrer = false;
+				var listObj = list.init(ops);
+				//				if(Cookies.get('token')){
+				//					//获取用户信息
+				//					getMyInfo(function (data) {
+				//						referrer = data.data.mobile;
+				//						var listObj = list.init(ops);
+				//					})					
+				//				}else{
+				//					var listObj = list.init(ops);
+				//				}
+
 				//点击编辑
-				$('.edit-start').on('click',function(){
+				$('.edit-start').on('click', function() {
 					$('body').addClass('edit');
 				})
 				//点击完成
-				$('.edit-end').on('click',function(){
-					$('body').removeClass('edit');					
+				$('.edit-end').on('click', function() {
+					$('body').removeClass('edit');
 					//模拟点击第一个选中的按钮,为了筛选不同购买类型;
 					var item = $('.checked-buy').filter(':checked');
-					if(item.length>0){
-						clickGoodsChecked(item.eq(0),true);
+					if(item.length > 0) {
+						clickGoodsChecked(item.eq(0), true);
 					}
 					//重新计算价格
 					imputedPrice();
 				})
 				//每次刷新、进入页面重新计算价格
-				onLoad(function () {
+				onLoad(function() {
 					imputedPrice();
 				});
-				
+
 				//点击某件商品
-				$('#listContBox').on('change','.checked-buy',function(e){
+				$('#listContBox').on('change', '.checked-buy', function(e) {
 					var _this = $(this);
 					var judge = $(this).checked();
 					//判断是否处于编辑状态   ？ 一致对待所有复选  ： 现金商品和积分商品不能共存.(默认支持选中商品的第一个类型)
-					judgeEidit() ? clickGoodsCheckedEdit(_this,judge):clickGoodsChecked(_this,judge);
+					judgeEidit() ? clickGoodsCheckedEdit(_this, judge) : clickGoodsChecked(_this, judge);
 				})
 				//点击全选
-				btnAllChecked.on('change',function (e) {
+				btnAllChecked.on('change', function(e) {
 					var _this = $(this);
 					var judge = $(this).checked();
-					judgeEidit() ? allAlterItemEdit(_this,judge) : allAlterItem(_this,judge) ;
+					judgeEidit() ? allAlterItemEdit(_this, judge) : allAlterItem(_this, judge);
 				})
 				//点击删除
-				$('.delete').on('click',function () {
+				$('.delete').on('click', function() {
 					var item = $('.checked-buy').filter(':checked');
-					if(item.length<=0){modal('没有选中商品');return false;}
+					if(item.length <= 0) {
+						modal('没有选中商品');
+						return false;
+					}
 					var jsons = '[';
-					item.each(function (i,e) {
-						if( i == item.length-1){			
+					item.each(function(i, e) {
+						if(i == item.length - 1) {
 							jsons += $(e).val();
-						}else{
-							jsons += $(e).val()+',';							
+						} else {
+							jsons += $(e).val() + ',';
 						}
 					})
 					jsons += ']';
-					removeCart(jsons,function (data) {
+					removeCart(jsons, function(data) {
 						item.parents('.my-list-li').remove();
 					})
 				});
 				//点击去结算
-				$('.settlement').on('click',function () {
+				$('.settlement').on('click', function() {
 					var item = $('.checked-buy').filter(':checked');
-					if(item.length<=0){modal('没有选中商品');return false;}
+					if(item.length <= 0) {
+						modal('没有选中商品');
+						return false;
+					}
 					var d = {
-						buyType:item.eq(0).attr('data-type'),
-						goodsMap:{},
-//						goodsList:[]
+						buyType: item.eq(0).attr('data-type'),
+						goodsMap: {},
+						//						goodsList:[]
 					};
-					item.each(function (i,e) {
+					item.each(function(i, e) {
 						//商品ID：商品数量
 						d.goodsMap[$(e).val()] = $(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val();
-//						d.goodsList.push({
-//							id:$(e).val(),
-//							total:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val(),
-//							price:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.price').val(),
-//							goodsName:$(e).attr('data-name')
-//						});
+						//						d.goodsList.push({
+						//							id:$(e).val(),
+						//							total:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val(),
+						//							price:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.price').val(),
+						//							goodsName:$(e).attr('data-name')
+						//						});
 					});
-					settlementOrder(d,function(data){//计算订单
-//						d.sumprice = $('.sum-price .money').text();
-						location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
+					settlementOrder(d, function(data) { //计算订单
+						//						d.sumprice = $('.sum-price .money').text();
+						location.href = 'orderSettlement.html?cart=true&data=' + encodeURI(JSON.stringify(d));
 					});
-//					location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
+					//					location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
 				});
 			})
 			//判断是否处于编辑状态 
@@ -304,191 +323,196 @@
 				return $('body').hasClass('edit');
 			}
 			//点击单件商品时 根据选中状态 判断全选
-			function clickGoodsChecked(_this,judge) {//点击商品
-				console.log('点击商品',judge);
-				if(judge === true){
+			function clickGoodsChecked(_this, judge) { //点击商品
+				console.log('点击商品', judge);
+				if(judge === true) {
 					var type = _this.attr('data-type');
 					var item = $('.checked-buy');
-					if(type==1){
-						var t = item.filter('.'+buy_class[1]) ;
-						var c = item.filter('.'+buy_class[0]) ;
-					}else{
-						var t = item.filter('.'+buy_class[0]) ;
-						var c = item.filter('.'+buy_class[1]) ;								
+					if(type == 1) {
+						var t = item.filter('.' + buy_class[1]);
+						var c = item.filter('.' + buy_class[0]);
+					} else {
+						var t = item.filter('.' + buy_class[0]);
+						var c = item.filter('.' + buy_class[1]);
 					}
-					if(c.filter(':checked').length>0){
+					if(c.filter(':checked').length > 0) {
 						modal('现金商品和积分商品不可同时结算');
 						c.checked(false);
 					}
 					//如果当前选择的商品，同类型在购物车只有一件
-					if(t.length<=1){
-						btnAllChecked.checked(true);	
-					}else{
-						t.each(function (i,e) {
-							if(!$(e).checked()){
+					if(t.length <= 1) {
+						btnAllChecked.checked(true);
+					} else {
+						t.each(function(i, e) {
+							if(!$(e).checked()) {
 								judge = false
 								return false;
 							}
 						})
 						btnAllChecked.checked(judge);
 					}
-				}else{
+				} else {
 					//取消全选
 					btnAllChecked.checked(false);
 				}
 				//计算价格
 				imputedPrice();
 			}
-			function clickGoodsCheckedEdit(_this,judge) {//编辑状态点击商品
-				console.log('编辑状态点击商品',judge);
-				if(judge === true){
+
+			function clickGoodsCheckedEdit(_this, judge) { //编辑状态点击商品
+				console.log('编辑状态点击商品', judge);
+				if(judge === true) {
 					//循环判断
 					var judge = true;
-					$('.checked-buy').each(function (i,e) {
-						if(!$(e).checked()){
+					$('.checked-buy').each(function(i, e) {
+						if(!$(e).checked()) {
 							judge = false;
 							return false;
 						}
 					})
 					//是否全选
-					if(judge){
+					if(judge) {
 						btnAllChecked.checked(judge);
 					}
-				}else{
+				} else {
 					//取消全选
 					btnAllChecked.checked(false);
 				}
 			}
-			
+
 			//通过全选按钮 的选中状态 来改变其他商品按钮的状态
-			function allAlterItem(_this,judge) {//点击全选
-				console.log('全选',judge);
+			function allAlterItem(_this, judge) { //点击全选
+				console.log('全选', judge);
 				var item = $('.checked-buy');
-				if(judge === true){
+				if(judge === true) {
 					var type;
 					//先判断有没有选中的，有就已选中中第一个的type全选
-					if( item.filter(':checked').length>0 ){
-						var c = item.filter(':checked'); 
-						if(c.length>=2 && c.filter('.'+buy_class[0]).length>0 && c.filter('.'+buy_class[1]).length>0 ){
+					if(item.filter(':checked').length > 0) {
+						var c = item.filter(':checked');
+						if(c.length >= 2 && c.filter('.' + buy_class[0]).length > 0 && c.filter('.' + buy_class[1]).length > 0) {
 							modal('现金商品和积分商品不可同时结算');
 						}
 						type = c.eq(0).attr('data-type');
-					}else{
+					} else {
 						type = item.eq(0).attr('data-type');
 					}
-					if(type==1){
-						item.filter('.'+buy_class[0]).checked(false);
-						item.filter('.'+buy_class[1]).checked(true);
-					}else{
-						item.filter('.'+buy_class[0]).checked(true);
-						item.filter('.'+buy_class[1]).checked(false);								
+					if(type == 1) {
+						item.filter('.' + buy_class[0]).checked(false);
+						item.filter('.' + buy_class[1]).checked(true);
+					} else {
+						item.filter('.' + buy_class[0]).checked(true);
+						item.filter('.' + buy_class[1]).checked(false);
 					}
-				}else{
+				} else {
 					item.checked(false);
 				}
 				//计算价格
 				imputedPrice();
 			}
-			function allAlterItemEdit(_this,judge) {//编辑状态点击全选
-				console.log('编辑状态点击全选',judge);
+
+			function allAlterItemEdit(_this, judge) { //编辑状态点击全选
+				console.log('编辑状态点击全选', judge);
 				//编辑状态
 				var item = $('.checked-buy');
-				if(judge === true){
+				if(judge === true) {
 					item.checked(true);
-				}else{
+				} else {
 					item.checked(false);
 				}
-				
+
 			}
-			
-			
-			function imputedPrice() {//计算价格  .toFixed(2)
+
+			function imputedPrice() { //计算价格  .toFixed(2)
 				var item = $('.checked-buy').filter(':checked');
-				var  sumbox = $('.sum-price');
-				if(item.length<=0){
+				var sumbox = $('.sum-price');
+				if(item.length <= 0) {
 					sumbox.html('<div class="flex-1">合计：<span class="money">0.00</span>元</div>');
 					return false;
 				}
-				var  sum = 0;
-				item.each(function (i,e) {
+				var sum = 0;
+				item.each(function(i, e) {
 					var box = $(e).parents('.my-list-li').find('.cu-quantity');
 					var price = parseFloat(box.children('.price').val());
 					var num = parseFloat(box.children('.cu-input').val());
-					sum += price*num;
+					sum += price * num;
 				})
 				sum = sum.toFixed(2);
-				if(item.eq(0).attr('data-type')==1){
-					sumbox.html('<div class="flex-1">合计：<span class="money">'+sum+'</span>积分</div>');
-				}else{
-					sumbox.html('<div class="flex-1">合计：<span class="money">'+sum+'</span>元</div>');
+				if(item.eq(0).attr('data-type') == 1) {
+					sumbox.html('<div class="flex-1">合计：<span class="money">' + sum + '</span>积分</div>');
+				} else {
+					sumbox.html('<div class="flex-1">合计：<span class="money">' + sum + '</span>元</div>');
 				}
 			}
 			//加减控制
-			;(function addRemoveTotal(){
+			;
+			(function addRemoveTotal() {
 				var wp = $('#listContBox');
 				min = 1;
-				wp.on('click','.cu-minus',function(e){ //减
+				wp.on('click', '.cu-quantity', function(e) {
+					e.preventDefault();
+				});
+				wp.on('click', '.cu-minus', function(e) { //减
 					var _this = $(this),
 						_input = _this.siblings('.cu-input'),
-//						min = 1,
+						//						min = 1,
 						p = parseInt(_input.val());
-					if( p-1 >= min){
-						alertCartNumber(_input.siblings('.goodsid').val(),p-1,function (data) {
-							numberAlertSuccess(_input,p-1);
-//							_input.val(p-1);
-//							_input.attr('value',p-1);
+					if(p - 1 >= min) {
+						alertCartNumber(_input.siblings('.goodsid').val(), p - 1, function(data) {
+							numberAlertSuccess(_input, p - 1);
+							//							_input.val(p-1);
+							//							_input.attr('value',p-1);
 						});
-					}else{
+					} else {
 						modal('购买数量不能小于1');
 					}
 				});
-				wp.on('click','.cu-add',function(e){ //加
+				wp.on('click', '.cu-add', function(e) { //加
 					var _this = $(this),
 						_input = _this.siblings('.cu-input'),
 						max = parseInt(_input.attr('max')),
 						p = parseInt(_input.val());
-					if( p+1 <= max){
-						alertCartNumber(_input.siblings('.goodsid').val(),p+1,function (data) {
-							numberAlertSuccess(_input,p+1);
-//							_input.val(p+1);
-//							_input.attr('value',p+1);
+					if(p + 1 <= max) {
+						alertCartNumber(_input.siblings('.goodsid').val(), p + 1, function(data) {
+							numberAlertSuccess(_input, p + 1);
+							//							_input.val(p+1);
+							//							_input.attr('value',p+1);
 						});
-					}else{
+					} else {
 						modal('没有更多库存了！');
 					}
 				});
-				wp.on('change','.cu-input',function(e){ //减
+				wp.on('change', '.cu-input', function(e) { //减
 					var _this = $(this),
 						max = parseInt(_this.attr('max')),
-//						min = 1,
+						//						min = 1,
 						p = parseInt(_this.val());
-					if(p<=max){
-						if(p >= min){
-							alertCartNumber(_this.siblings('.goodsid').val(),p+1,function (data) {
-								numberAlertSuccess(_this,p);
-//								_this.val(p);
-//								_this.attr('value',p);
+					if(p <= max) {
+						if(p >= min) {
+							alertCartNumber(_this.siblings('.goodsid').val(), p + 1, function(data) {
+								numberAlertSuccess(_this, p);
+								//								_this.val(p);
+								//								_this.attr('value',p);
 							});
-						}else{
+						} else {
 							_this.val(_this.attr('value'));
 							modal('购买数量不能小于1');
 						}
-					}else{
+					} else {
 						_this.val(_this.attr('value'));
-						modal('没有那么多库存，最多购买'+max+'件!');
+						modal('没有那么多库存，最多购买' + max + '件!');
 					}
 				});
-				function numberAlertSuccess(_input,num) {
+
+				function numberAlertSuccess(_input, num) {
 					var judge = _input.parents('.my-list-content').siblings('.my-list-checked').children('.fx').children('.checked-buy').checked();
 					_input.val(num);
-					_input.attr('value',num);
+					_input.attr('value', num);
 					//判断当前改变的商品是否选择，决定是否重新计算价格
-					if(judge){
+					if(judge) {
 						imputedPrice();
 					}
 				}
 			}());
-			
 		</script>
 	</body>
 

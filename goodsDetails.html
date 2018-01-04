@@ -36,7 +36,7 @@
 
 	<body class="bg-eee">
 		<script type="text/template" id="details">
-			<%console.log(data);goods=data;goodsId = data.id;var imgarr = getImgurl(data.goodsPics);console.log(imgarr);%>
+			<%goods=data;goodsId = data.id;var imgarr = getImgurl(data.goodsPics);%>
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
 					<%for(var i=0;i<imgarr.length;i++){ %>
@@ -86,6 +86,20 @@
 			</div>
 		</script>
 
+		<div class="open-app">
+			<div class="flex">
+				<div class="info flex">
+					<div class="esc "><i>x</i></div>
+					<div class="flex-1 flex">
+						<img class="logo" src="image/login/login-logo.png" />
+						<p>打开吉粮惠民APP购物<br />购买即补贴粮票</p>
+					</div>
+				</div>
+				<!--<a class="open-app-btn flex-1" href="hmclient://TYPE=1&ID=110" id="openApp">打开APP</a>-->
+				<a class="open-app-btn flex-1" id="openApp">打开APP</a>
+			</div>
+		</div>
+
 		<!--<div class="purseList">-->
 		<div class="page">
 			<header id="header">
@@ -129,11 +143,20 @@
 			var goods = false;
 			/* 获取url 带参 */
 			var urld = getQueryData();
-			if(urld.id) {
-				getDetails();
-			} else {
-				modal('获取商品详情失败');
-			}
+			$(function  () {
+				if(urld.id) {
+					//获取商品
+					getDetails();
+					//非app内显示注册提示
+//					noIsHMSH(function () {
+//						onLoad(function () {							
+//							openApp();
+//						});
+//					});
+				} else {
+					modal('获取商品详情失败');
+				}
+			});
 			
 
 			//iscrollContent();
@@ -197,7 +220,7 @@
 //				});
 				settlementOrder(d,function(data){//计算订单
 					//d.sumprice = $('.sum-price .money').text();
-					location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
+					location.href = 'orderSettlement.html?data='+encodeURI(JSON.stringify(d));
 				});
 //				location.href = 'orderSettlement.html?data=' + encodeURI(JSON.stringify(d));
 			}
@@ -250,6 +273,25 @@
 					_input.attr('value', num);
 				}
 			}());
+			/*open 打开APP*/
+			function openApp() {
+				//加载打开APP
+				$(".open-app").addClass('show');
+				$(".open-app .esc").on('click', function(e) {
+					$(".open-app").removeClass('show');
+					setTimeout(function() {
+						$(".open-app").remove();
+					}, 400)
+				});
+				$("#openApp").on('click', function(e) {
+					e.preventDefault();
+					if(urld.referrer&&urld.referrer!= 'false'&&urld.referrer.length == 11){
+						location.href = 'register.html?referrer='+urld.referrer;
+					}else{
+						location.href = 'register.html'	
+					}
+				});
+			};
 		</script>
 	</body>
 

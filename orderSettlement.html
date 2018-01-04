@@ -282,7 +282,6 @@
 						sixPass.show();
 					},'?&beforepage=order&data='+ encodeURI(urld.data));
 //					},'?beforepage=order&'+location.search.substr(1));
-					
 					return false;
 				}else{
 					ajax({
@@ -296,7 +295,8 @@
 						success:function(data){
 							console.log('现金下单成功',data);
 							orderRemoveCart(function(){
-								goPayment(data.data.orderId);								
+								window.location.replace('payment.html?beforepage=order&orderId=' + data.data.orderId);
+								//goPayment(data.data.orderId);								
 							});
 						}
 					})

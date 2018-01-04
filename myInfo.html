@@ -43,9 +43,15 @@
 				<ul>
 					<li><label class="lab">会员账号</label><span class="flex-1"><%=item.mobile %></span></li>
 					<li><label class="lab">会员昵称</label><span class="flex-1"><%=item.trueName%></span></li>
-					<li><label class="lab">会员等级</label><span class="flex-1"><%=item.rankText %></span></li>
+					<li><label class="lab">会员等级</label><span class="flex-1">
+						<% if( item.rank>0 && item.rank<=10){ %>
+							会员
+						<% }else if( item.rank > 10 ){ %>
+							<%=item.rankText%>
+						<% } %>
+					</span></li>
 					<li><label class="lab">推荐人</label><span class="flex-1"><%=item.pid %></span></li>
-					<li><label class="lab">省市区</label><span class="flex-1"><%=item.provinceText +'-'+ item.cityText +'-'+ item.areaText%></span></li>
+					<li><label class="lab">省市区</label><span class="flex-1"><%= (item.provinceText||'') +'-'+ (item.cityText||'') +'-'+ (item.areaText||'')%></span></li>
 					<li><label class="lab">性别</label><span class="flex-1"><%=item.sex==1?'男':'女'%></span></li>
 					<li><label class="lab">注册时间</label><span class="flex-1"><%= parseDate(item.regTime)%></span></li>
 				</ul>

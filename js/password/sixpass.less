@@ -9,8 +9,40 @@
     &.active{
         display: -webkit-flex;
         display: flex;        
-    }    
-        .pwd-box{  
+    }
+    .six-pass-content{
+        background-color: white;
+        padding: 0.2rem;
+        border-radius: 4px;
+        position: relative;
+    }
+    .six-pass-close{
+        position: absolute;top: 0;right: 0; z-index: 2;
+        display: block;
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+        line-height: 25px;
+        text-align: center;
+        background-color: rgba(0,0,0,.1);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        
+    }
+    header{
+//      background-color: white;
+        line-height: 30px;
+        height: 30px;
+        text-overflow: ellipsis;
+        overflow-wrap: normal;
+        overflow: hidden;
+//      padding: 0 0.2rem;
+        margin-bottom: 0.2rem;
+        font-size: 0.3rem;
+    }
+        .pwd-box{ 
+            text-align: center;
             width:280px;  
             padding-left: 1px;  
             position: relative;  
@@ -36,8 +68,11 @@
             height: 48px;  
             border: none;  
             border: 1px solid #E6E6E6;  
-            text-align: center;  
+            text-align: center; 
             font-size: 30px;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
             & + input{
                 border-left-width: 0;
             }  

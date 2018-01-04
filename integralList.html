@@ -18,6 +18,7 @@
 		<title>积分明细</title>
 		<link rel="stylesheet" type="text/css" href="css/public.css" />
 		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css"/>
+		<link rel="stylesheet" type="text/css" href="js/layui/laydate.css"/>
 		
 		<script src="js/zepto/zepto.min.js"></script>
 		<script src="js/modal/modal.js"></script>
@@ -27,6 +28,7 @@
 		<script src="js/scroll/iscrollAssist.js" ></script>
 		<script src="js/scroll/underscore.js" ></script>
 		<script src="js/scroll/paging.js" ></script>
+		<!--<script src="js/layui/laydate.js" type="text/javascript" charset="utf-8"></script>-->
 		
 		<style type="text/css">
 			td,td>*{
@@ -102,6 +104,16 @@
 	    			url: url_getlist
 	    		}
 	    		listObj= list.init(ops);
+//	    		laydate.render({
+//					elem: '#date' //指定元素
+//					,type:'month'
+//					,value:new Date()
+//					,done: function(value, date, endDate){
+//						listObj.data.month = value;
+//						$('#listContBox').empty();
+//						listObj.getList();
+//					}
+//				});
 	    	})
 		</script>
 	</body>

@@ -38,12 +38,18 @@
 			<% var item = data;%>
 			<img class="fl-l" src="<%=item.headImg||'image/alterPassword/logo.png'%>" />
 				<div class="">
-				<h3 class="text-over-hide"><%=item.trueName||'用户'%><small class="lab"><%=item.rankText||'游客'%></small></h3>
+				<h3 class="text-over-hide"><%=item.trueName||'用户'%>
+					<% if( item.rank>0 && item.rank<=10){ %>
+						<small class="lab">会员</small>
+					<% }else if( item.rank > 10 ){ %>
+						<small class="lab"><%=item.rankText%></small>
+					<% } %>
+				</h3>
 				<p><%=item.mobile%></p>
 			</div>
 			<a class="right-label" href="myInfo.html"  style="height: 100%;"></a>
 		</script>
-
+		
 		<div class="purseList">
 			<header id="header">
 				<!--<a class="return" href="javascript:history.go(-1);"></a>-->
