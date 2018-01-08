@@ -32,7 +32,7 @@
 		<script src="js/scroll/underscore.js"></script>
 		<script src="js/scroll/paging.js"></script>
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
-		<!--<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>-->
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -182,6 +182,7 @@
 			
 			
 			$(function() {
+				/*带参登录*/
 				var urld = getQueryData();
 				if(urld.jlToken && !!!Cookies.get('token')){
 					ajax({
@@ -226,19 +227,10 @@
 					tpl: $('#tpl').html(),
 					url: url_getGoodsList
 				}
-				referrer = false;
-				var listObj = list.init(ops);
-//				if(Cookies.get('token')){
-//					//获取用户信息
-//					getMyInfo(function (data) {
-//						referrer = data.data.mobile;
-//						var listObj = list.init(ops);
-//					})					
-//				}else{
-//					var listObj = list.init(ops);
-//				}
-				
-				
+				var listObj;
+				judgeLoginStorageReferrer(function(){
+					listObj = list.init(ops);					
+				})
 				
 				/*
 				  	点击查询商品分类

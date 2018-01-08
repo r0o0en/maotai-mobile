@@ -12,8 +12,8 @@ window.getAjaxOrigin = function(){//返回请求接口的 origin
 		}
 	}else if(location.origin == "http://hs1006.22ip.net:5555"){ 
 		fun = function(){ return 'http://hs1006.22ip.net:2222';}
-	}else{
-		fun = function(){ return 'http://maotai.hmsh.com';}
+	}else {
+		fun = function(){ return '';}
 	}
 	return fun;
 }();
@@ -21,7 +21,7 @@ function getOrigin() { //返回项目所在的 origin
 	return location.origin;
 }
 function loginPage(){//跳转登录页
-	location.href = location.origin +'/'+workspace+ '/login.html';
+	location.href = './login.html';
 }
 
 /*
@@ -79,17 +79,19 @@ var isTestLocalhost = location.origin == 'http://192.168.1.188';
 })(isTestLocalhost);
 
 isTestLocalhost(function () {
-//	document.write("<script language=\"javascript\" src=\"http:\/\/192.168.1.188/hmsh-agent-web\/src\/main\/webapp\/mobile-new\/js\/vconsole.min.js\" > <\/script><script>var v = new VConsole();<\/script>");
+	document.write("<script language=\"javascript\" src=\"http:\/\/192.168.1.188/hmsh-agent-web\/src\/main\/webapp\/mobile-new\/js\/vconsole.min.js\" > <\/script><script>var v = new VConsole();<\/script>");
 	//	if( document.getElementById('flexRefreshBtn')){
 	//		document.getElementById('flexRefreshBtn').style.display = 'block';		
 	//	}
 });
 
 /* 一些公用的初始化 、hack*/
-defineRem();
-$(window).resize(function () {
+if( !(/register_invite\.html/ig.test(location.href)) ){
 	defineRem();
-});
+	$(window).resize(function () {
+		defineRem();
+	});	
+}
 $(function () {
 	if(browser.versions.ios||browser.versions.iPhone ||browser.versions.iPad){
 		$('body').addClass('ios');
@@ -98,8 +100,6 @@ $(function () {
 		$('body').addClass('samsung');
 	}
 });
-
-
 
 //usertype
 function userType (val) {
@@ -674,4 +674,30 @@ function isHMSH (fun) {
 function noIsHMSH (fun) {
 	if(!judgeIsHMSH && fun){fun();}
 	return !judgeIsHMSH;
+}
+function refreshPage(time) {
+	var t = time ? time * 1000 : 10 * 1000;
+	var n = setTimeout(function () {
+		location.reload();
+	},t);
+	return {
+		remove:function(){
+			clearTimeout(n);
+		}
+	}
+}
+function refreshData(time,fun) {
+	var t = time&& typeof time == 'number' ? time * 1000 : 10 * 1000;
+	var n = setInterval(function () {
+		if(typeof fun == 'function'){
+			fun();
+		}else if(typeof time == 'function'){
+			time();
+		}
+	},t);
+	return {
+		remove:function(){
+			clearInterval(n);
+		}
+	}
 }

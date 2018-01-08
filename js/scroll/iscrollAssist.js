@@ -182,16 +182,21 @@
 		}
 		$('#list-wrap').height(wh - hh);
         onLoad instanceof Function ? onLoad(function () {
-        	window.iSObj.refresh();
+        	iscrollRefresh();
         }) : '';
         return iscrollAssist.newVerScroll(wrapper || $('#wrapper')[0]); //window.iSObj;
 	};
+	window.iscrollRefresh = function () {
+		setTimeout(function(){
+        	window.iSObj.refresh();        		
+        },100);
+	}	
+	//判断ios 禁止橡皮筋
 	if( browser.versions.ios || browser.versions.iPad || browser.versions.iPhone){		
 		$('html').on('touchmove',function(e){
 			e.stopPropagation();
 			return false;
 		})
 	}
-	
 	
 })(Zepto,window);

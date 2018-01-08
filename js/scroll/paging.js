@@ -75,9 +75,11 @@ var list = {
 			return;
 		} else if(jsondt.data.length < _this.limit && _this.pageIndex != pageIndexDefaults) {
 			_this.listContBox.append(str(jsondt));
-			_this.iscrollObj.refresh();
-			$('#pullup-label').text('最底部，没有更多数据了!');
-			modal('最后一页，没有更多数据咯!');
+			setTimeout(function(){
+				_this.iscrollObj.refresh();
+				$('#pullup-label').text('最底部，没有更多数据了!');
+				modal('最后一页，没有更多数据咯!');				
+			},100);
 			return false;
 		}
 		//更新列表数据
@@ -91,9 +93,11 @@ var list = {
 		//		}
 		//		height = boxHeight;
 		//插件刷新
-		_this.iscrollObj.refresh();
+		setTimeout(function(){
+			_this.iscrollObj.refresh();
+			//modal('加载完成');
+		},100);
 
-		//modal('加载完成');
 	},
 	judgeTemplate: function() { /*判断 underscore.js模板*/
 		if(typeof _ == 'undefined' || !(_ instanceof Function)) {

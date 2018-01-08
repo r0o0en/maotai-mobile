@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, width=device-width"/>
+    <meta name="format-detection" content="telephone=no, email=no, address=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="http://app.jlhmsh.com/share/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="http://app.jlhmsh.com/share/css/rem.css"/>
+    <link rel="stylesheet" type="text/css" href="http://app.jlhmsh.com/share/css/reg.css"/>
+    <style type="text/css">
+        .m_popGetTip {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .7);
+            z-index: 9;
+            text-align: center;
+        }
+
+        .m_popGetTip .inner {
+            display: inline-block;
+            width: 90%;
+            max-width: 640px;
+            margin-top: 50%;
+            background: #fff;
+            border-radius: 5px;
+            line-height: 40px;
+        }
+
+        .m_popGetTip h3 {
+            border-bottom: 1px solid #ddd;
+            color: #E05151;
+        }
+
+        .m_popGetTip p {
+            padding: 10px;
+        }
+
+        .gouxuan {
+            background: url(img/ico.png) no-repeat center !important;
+            background-size: 100% !important;
+            z-index: 2;
+            background-repeat: no-repeat !important;
+        }
+
+        #agr_btn {
+            width: 13px;
+            height: 13px;
+            display: block !important;
+            position: absolute;
+            border: 0px;
+            background: rgba(0, 0, 0, 0) !important;
+        }
+    </style>
+</head>
+<body>
+<div class="g-wrap m-reg">
+    <form class="form" id="reg_from">
+        <div class="item">
+            <label class="lab">手机号</label>
+            <input type="tel" placeholder="请输入手机号码" class="txt" id="phone_txt" name="phone" autocomplete="off">
+        </div>
+        <div class="item">
+            <label class="lab">密&nbsp;&nbsp;码</label>
+            <input type="password" placeholder="请输入密码" class="txt" name="pwd" id="pwd_txt" autocomplete="off">
+        </div>
+        <!--<div class="item">
+            <label class="lab">类&nbsp;&nbsp;型</label>
+            <div class="type">
+                <label class="u_checkbox fl" for="cc_one"><input id="cc_one" type="radio" name="utype" value="1"
+                                                                 onclick="href_gr()" checked="checked"><i
+                        class="ico fl gouxuan" id="btn_i_1"></i>个人版</label>
+                <label class="u_checkbox fl" for="cc_two"><input id="cc_two" type="radio" name="utype" value="2"
+                                                                 onclick="href_sj()"><i class="ico fl" id="btn_i_2"></i>商家版</label>
+            </div>
+        </div>-->
+        <div class="item">
+            <label class="lab">图形码</label>
+            <input placeholder="请输入右图内容" class="txt" name="vCode" id="vCode_txt">
+            <img id="vCode_Img" style="position:absolute;display: inline-block;right: .1rem;top: 0.05rem;width: 1.4rem;height: 3em">
+        </div>
+        <div class="item">
+            <label class="lab">验证码</label>
+            <input placeholder="手机验证码" class="txt" name="authCode" id="authCode_txt">
+            <a href="javascript:void(0)" class="get" id="vis_code">获取</a>
+        </div>
+        <div class="item">
+            <label class="lab">邀请人</label>
+            <input placeholder="邀请人手机号" class="txt" name="invitation" id="invitation_txt">
+        </div>
+        <!--<div class="item">
+            <label class="lab">邀请人</label>
+            <div class="type" id="invitation"></div>
+        </div>-->
+        <div class="rule" for="agreement" id="agreement_box">
+            <label class="u_checkbox" id="btn_ty">
+                <input type="checkbox" id="agr_btn" name="actid" value="1" checked="checked">
+                <input type="checkbox" id="agreement"><i id="asdasd" class="ico fl" style="opacity:0;"></i>同意《吉粮惠民协议》<a
+                    href="http://dl.jlhmsh.com/static/xy/xy_user.html" id="ppxy_c" style="color: #E4EC12;">阅读</a>
+            </label>
+        </div>
+        <button class="btn reg_but" id="reg_but" type="button">立即注册</button>
+    </form>
+</div>
+<div class="m_popGetTip" id="j_popGetTip">
+    <div class="inner">
+        <h3 style="text-align: left;">&nbsp;&nbsp;茅台优品提示</h3>
+        <p id="error_msg">
+            <!--您还需要邀请<em>5</em>人才有资格领取-->
+        </p>
+    </div>
+</div>
+<script src="js/zepto/zepto.min.js"></script>
+<script src="http://app.jlhmsh.com/js/utils1.0.js"></script>
+<script src="js/core.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/sha256.min.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="js/aze_lib.js" type="text/javascript" charset="utf-8"></script>-->
+<!--<script src="../js/share/common.js"></script>-->
+<script>
+	window.getAjaxOrigin = function(){//返回请求接口的 origin
+		var fun;
+		if(location.origin == "http://192.168.1.188"){
+			fun = function(){ 
+				return 'http://maotai.hmsh.com';
+			//	return 'http://192.168.1.245:8085';//甘佳
+			//	return 'http://192.168.1.124:8085';//雷超
+			}
+		}else if(location.origin == "http://hs1006.22ip.net:5555"){ 
+			fun = function(){ return 'http://hs1006.22ip.net:2222';}
+		}else{
+			fun = function(){ return '';}
+		}
+		return fun;
+	}();
+	
+	//图片验证码
+	var url_register_getImgCode = getAjaxOrigin()+ '/api/user/getImgCode';
+	//手机验证码
+	var	url_register_getCode = getAjaxOrigin()+ '/api/user/getPhoneCode';
+	//注册
+	var	url_register_setPass = getAjaxOrigin()+ '/api/user/register';
+	//不跳转
+	var registerSuccess = function () {
+		location.href = 'login.html';
+	}
+	
+    $.fn.judegNumberLetter = function(callback) {
+        var reg = /^[a-zA-Z0-9]{1,4}$/; //字母数字1-4位
+        return this.each(function(i, e) {
+            //缓存以前的值
+            var  before = $(this).val();
+            $(this).on('keyup paste', function(e) {
+                var val =  $(this).val();
+                if( val.length>0 && !reg.test(val) ) {
+                    val = $.trim(val);
+                    if(reg.test(val) ){
+                        $(this).val(val);
+                    }else{
+                        $(this).val(before);
+                    }
+                }
+                before = $(this).val();
+            });
+        });
+    };
+    
+    
+    var myTime, num = 120;
+    /*控制内容区域高度*/
+    $(function () {
+        
+        /*图形验证码*/
+        $("#vCode_Img").attr('src',url_register_getImgCode);
+        var lastTime = new Date().getTime();
+        $("#vCode_Img").on('click',function () {
+            var now = new Date().getTime();
+            if(now - lastTime > 500){
+                $("#vCode_Img").attr("src",url_register_getImgCode+"?t="+now);
+                lastTime = now;
+            }
+        });
+        $("#vCode_txt").judegNumberLetter();
+		
+		//邀请人
+		var referrer = getQueryString('referrer');
+		if(referrer && referrer.length==11){
+			$('#invitation_txt').val(referrer).attr('disabled','disabled');
+		}
+        /**获取验证码*/
+        $("#vis_code").on("click", function () {
+            if (num < 120) {
+                return;
+            }
+            var ptxt = $("#phone_txt").val();
+            console.log(ptxt,!ptxt);
+            
+            if (!ptxt) {
+            	console.log(1);
+            	showInfo("请输入手机号");
+//              $("#error_msg").html("请输入手机号");
+//              $("#j_popGetTip").show();
+                return;
+            }
+
+            var vCode = $("#vCode_txt").val();
+            if( !vCode ){
+            	showInfo("请输入图形验证码");
+//              $("#error_msg").html("请输入图形验证码");
+//              $("#j_popGetTip").show();
+                return;
+            }else
+            
+            $.ajax({
+                type: 'GET',
+                url: url_register_getCode,
+                data: {
+                	phone:ptxt,
+					vCode:vCode
+                },
+                dataType: 'json',
+                timeout: 5000,
+                success: function (data) {
+                    var app = data;
+                    if (app.code == 200) {
+                        myTime = setInterval(function () {
+                            timeShow()
+                        }, 1000);
+                        return;
+                    }
+                    if(app.msg){
+                    	showInfo(app.msg);
+                    }else {
+                    	showInfo("验证码获取失败");
+                    }
+                },
+                error: function (xhr, errorType, error) {
+                	showInfo("验证码获取失败");
+                }
+            })
+
+        });
+        
+        $("#reg_but").on("click", function (e) {
+            if (!$("#agr_btn").is(':checked')) {
+            	showInfo("请勾选协议");
+                return false;
+            }
+
+            var len = $("#phone_txt").val().length;
+            if (len <= 6) {
+            	showInfo("请输入正确的手机号");
+                return false;
+            }
+            len = $("#authCode_txt").val().length;
+            if (len != 6) {
+            	showInfo("请输入正确的验证码");
+                return false;
+            }
+            len = $("#pwd_txt").val().length;
+            if (len < 6) {
+            	showInfo("密码不能少于 6 位 ");
+                return false;
+            }
+//          $("#invitationCode_txt").val(vic);
+//          $("#uid_txt").val(uid);
+            submitFrom();
+            return false;
+        });
+
+    });
+    function timeShow() {
+        $("#vis_code").html(num);
+        num = num - 1;
+        if (num === 0) {
+            clearInterval(myTime);
+            $("#vis_code").html("获取");
+            num = 120;
+        }
+    }
+    function submitFrom() {
+        $.ajax({
+            type: 'POST',
+            url: url_register_setPass,
+            dataType: 'json',
+            timeout: 30000,
+            data: getFormData(),
+            success: function (data) {
+                var app = data;
+                if (app.code === 200) {
+                	showInfo("注册成功");
+                    if(registerSuccess&& typeof registerSuccess == 'function'){                    	
+                    	registerSuccess();
+                  	}
+//              } else if (app.code === 100002) {
+//                  $("#error_msg").html("手机号码格式错误。");
+//              } else if (app.code === 100003) {
+//                  $("#error_msg").html("手机号已经注册。");
+//              } else if (app.code === 110005) {
+//                  $("#error_msg").html("验证码不正确。");
+//              } else {
+                }
+                if(app.msg){
+                    showInfo(app.msg);
+                }else {
+                    showInfo("验证码获取失败");
+                }
+            },
+            error: function (xhr, errorType, error) {
+            	showInfo("注册失败");
+                return false;
+            }
+        });
+    }
+    function getFormData(){
+    	var form = $('#reg_from');
+    	var user = $('#phone_txt');
+    	var phonecode = $('#authCode_txt');
+    	var pass = $('#pwd_txt');
+    	var inviter = $('#invitation_txt');
+    	return {
+			phone: user.val(),
+			phoneCode:phonecode.val(),
+			pwd:sha256(pass.val()),
+			tjrPhone:inviter.val()
+		}
+    }
+    function sha256(str) {
+		if(!!!str){return false;}
+		return CryptoJS.SHA256(str).toString(CryptoJS.enc.Hex);
+	}
+    /*关闭弹出层*/
+        $("#j_popGetTip").on("click", function (e) {
+            $(this).hide();
+            e.preventDefault();
+        });
+        /*显示弹出层*/
+       	function showInfo(text){
+       		if(text){
+       			$("#error_msg").html(text);       			
+       		}
+            $("#j_popGetTip").show();
+       	}
+    
+
+
+</script>
+</body>
+</html>

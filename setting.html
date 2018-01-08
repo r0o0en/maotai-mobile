@@ -22,7 +22,6 @@
 		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
 		<link rel="stylesheet" type="text/css" href="css/defined/footer.css" />
 		<link rel="stylesheet" type="text/css" href="css/pages/accountManage.css"/>
-		
 		<script src="js/zepto/zepto.min.js"></script>
 		<script src="js/modal/modal.js"></script>
 		<script src="js/aze_lib.js"></script>
@@ -115,6 +114,11 @@
 								<li><a href="myFans.html">我的粉丝</a><span></span></li>
 							</ul>
 						</section>
+						<section class="column hide">
+							<ul>
+								<li><a class="referrer-url" href="register_invite.html?&maotaiShare">邀请好友</a><span></span></li>
+							</ul>
+						</section>
 						<section>
 							<ul>
 								<li><a onclick="logout()" class="btn btn-green wd-all btn-lg" id="logout">退出登录</a></li>
@@ -131,6 +135,15 @@
 				getSimpleInfo(function (data) {
 					var str = _.template($('#myInfo').html());
 					$('.my-info').empty().append(str(data));
+					
+					console.log(data.data.rank,!!data.data.rank);
+					//修改邀请好友连接
+					if(!!data.data.rank) {
+						$('.referrer-url').attr('href','register_invite.html?referrer='+data.data.mobile+'&maotaiShare');
+					} else {
+						//$('.referrer-url').attr('href','register_invite.html?&maotaiShare');
+					}
+					
 				})
 			})
 			

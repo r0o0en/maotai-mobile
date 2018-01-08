@@ -92,11 +92,11 @@
 					<div class="esc "><i>x</i></div>
 					<div class="flex-1 flex">
 						<img class="logo" src="image/login/login-logo.png" />
-						<p>打开吉粮惠民APP购物<br />购买即补贴粮票</p>
+						<p>现在注册茅台优品<br />注册即补贴粮票</p>
 					</div>
 				</div>
-				<!--<a class="open-app-btn flex-1" href="hmclient://TYPE=1&ID=110" id="openApp">打开APP</a>-->
-				<a class="open-app-btn flex-1" id="openApp">打开APP</a>
+				<!--<a class="open-app-btn flex-1" href="hmclient://TYPE=1&ID=110" id="openApp">立即注册</a>-->
+				<a class="open-app-btn flex-1" id="openApp">立即注册</a>
 			</div>
 		</div>
 
@@ -149,7 +149,7 @@
 					getDetails();
 					//非app内显示注册提示
 //					noIsHMSH(function () {
-//						onLoad(function () {							
+//						onLoad(function () {
 //							openApp();
 //						});
 //					});
@@ -286,9 +286,9 @@
 				$("#openApp").on('click', function(e) {
 					e.preventDefault();
 					if(urld.referrer&&urld.referrer!= 'false'&&urld.referrer.length == 11){
-						location.href = 'register.html?referrer='+urld.referrer;
+						location.href = 'register_invite.html?referrer='+urld.referrer;
 					}else{
-						location.href = 'register.html'	
+						location.href = 'register_invite.html'	
 					}
 				});
 			};

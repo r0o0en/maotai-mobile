@@ -38,6 +38,7 @@
 		<script src="js/scroll/underscore.js"></script>
 		<script src="js/scroll/paging.js"></script>
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body class="bg-eee">
@@ -224,17 +225,10 @@
 					tpl: $('#tpl').html(),
 					url: url_getCartList
 				}
-				referrer = false;
-				var listObj = list.init(ops);
-				//				if(Cookies.get('token')){
-				//					//获取用户信息
-				//					getMyInfo(function (data) {
-				//						referrer = data.data.mobile;
-				//						var listObj = list.init(ops);
-				//					})					
-				//				}else{
-				//					var listObj = list.init(ops);
-				//				}
+				var listObj;
+				judgeLoginStorageReferrer(function(){
+					listObj = list.init(ops);					
+				})
 
 				//点击编辑
 				$('.edit-start').on('click', function() {
