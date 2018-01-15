@@ -12,9 +12,10 @@
 		<!-- QQ强制竖屏 -->
 		<meta name="x5-orientation" content="portrait">
 		<!--test缓存-->
-		<!--<meta http-equiv="Pragma" content="no-cache">
+		
+		<meta http-equiv="Pragma" content="no-cache">
 		<meta http-equiv="Cache-Control" content="no-cache">
-		<meta http-equiv="Expires" content="0">-->
+		<meta http-equiv="Expires" content="0">
 
 		<title>支付成功</title>
 
@@ -96,14 +97,13 @@
 							<img src="image/ico/ico-success.png"/>
 							<p class="cl-green">支付成功</p>
 							<p><small class="auto-return-info">5s后返回订单列表</small></p>
-							<p><a class="btn btn-green btn-sm" href="orderList.html?status=1">立即返回</a></p>
+							<p><a class="btn btn-green btn-sm"  onclick="selfGoPage()">立即返回</a></p>
 						</div>
 						<div class="pay-type pay-error ">
 							<img src="image/ico/ico-error.png"/>
 							<p class="cl-red error-info">支付失败</p>
 							<p><small class="auto-return-info">5s后返回订单列表</small></p>
-							<p><a class="btn btn-green btn-sm" href="orderList.html?status=1">立即返回</a></p>
-							
+							<p><a class="btn btn-green btn-sm" onclick="selfGoPage()">立即返回</a></p>
 						</div>
 					</div>
 				</div>
@@ -134,9 +134,14 @@
 					setTimeout(autoReturn,1000);
 				}else{
 					time =5;
-					location.href = "orderList.html?status=1";
+					selfGoPage();
 				}
-				
+			}
+			
+			function selfGoPage() {
+				//location.href = "orderList.html?status=1";
+				location.replace('orderList.html?status=1');
+				return false;
 			}
 		</script>
 	</body>

@@ -73,10 +73,16 @@
 			<li class="fx block">
 				<input type="radio" id="<%=item.paymentCode%>" name="payType" <%= item.paymentCode == 'balance'?'checked':'' %>  value="<%=item.paymentCode%>" />
 				<label for="<%=item.paymentCode%>">
-					<img src=<%= item.paymentCode =='alipay'? 'image/ico/zfb.png':'image/alterPassword/logo.png' %> /><%=item.paymentName%>
-					<%if(item.paymentCode == 'balance'){ %>
+					<% if(item.paymentCode == 'balance'){ %>						
+						<img src='image/alterPassword/logo.png' /><%=item.paymentName%>
+					<% }else if(item.paymentCode == 'kqpay'){ %>
+						<img src='image/ico/kq_log.gif' /><%=item.paymentName%>
+					<% }else  if(item.paymentCode == 'alipay'){ %>
+						<img src='image/ico/zfb.png' /><%=item.paymentName%>
+					<% } %>
+					<% if(item.paymentCode == 'balance'){ %>
 						<span class="cl-red">（<%= returnNumbers(item.balance) %>）</span>
-					<%}%>
+					<% } %>
 				</label>
 			</li>
 			<%}%>
@@ -117,10 +123,14 @@
 			//获取订单详情
 			var url_getOrderDetail = getAjaxOrigin() + '/api/order/orderDetail';
 			//支付列表
-			//			var url_getPayTypeList = getAjaxOrigin() + '/app/pay/payList';
+			//	var url_getPayTypeList = getAjaxOrigin() + '/app/pay/payList';
 			var url_getPayTypeList = getAjaxOrigin() + '/api/wallet/payList';
 			//支付宝支付
 			var url_getPayZFB = getAjaxOrigin() + '/app/pay/aliPay';
+			//天付宝支付
+			var url_getPayTFB = getAjaxOrigin() + '/app/pay/tfbPay';
+			//块钱支付
+			var url_getPayKQ = getAjaxOrigin() + '/app/pay/kqPay';
 			//查询支付
 			var url_getPayStatus = getAjaxOrigin() + '/app/pay/queryOrderPaymentStatus';
 			//使用余额支付
@@ -213,6 +223,31 @@
 						}
 					})
 					//					location.href = url_getPayZFB +'?orderId='+urld.orderId;
+				}else if(payType == "tfbpay"){ //天付宝
+					ajax({
+						type: 'get',
+						url: url_getPayTFB + '?orderId=' + urld.orderId,
+						success: function(data) {
+							if(data.code == 200) {
+								location.href = data.msg;
+							}
+						}
+					})
+				}else if(payType == "kqpay"){ //快钱支付
+//					location.href = url_getPayKQ + '?orderId=' + urld.orderId;
+					ajax({
+						type: 'get',
+						url: url_getPayKQ + '?orderId=' + urld.orderId,
+						success: function(data) {
+							if(data.code == 200) {
+								var iframe = $('<iframe></iframe/>').html(data.msg);
+								$('body').append(iframe);
+								console.log(data);
+								console.log(data.msg);
+//								location.href = data.msg;
+							}
+						}
+					})
 				}
 
 			}
