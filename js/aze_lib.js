@@ -555,10 +555,11 @@ function goBack(url){
             window.history.go( -1 );  
         }else{
         	if(url){
-            	location.href = url;
+        		window.location.replace(url);
+            	//location.href = url;
             	return false;
             }
-            window.opener=null;window.close();  
+            window.opener=null;window.close();
         }  
     }else{ //非IE浏览器  
         if (navigator.userAgent.indexOf('Firefox') >= 0 ||  
@@ -571,7 +572,8 @@ function goBack(url){
                 window.history.go( -1 );  
             }else{  
             	if(url){
-            		location.href = url;
+            		window.location.replace(url);
+            		//location.href = url;
             		return false;
             	}
                 window.opener=null;window.close();  

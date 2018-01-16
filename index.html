@@ -17,7 +17,7 @@
 		<meta http-equiv="Expires" content="0">-->
 		
 		<title>优品区</title>
-
+		
 		<link rel="stylesheet" type="text/css" href="./css/public.css" />
 		<link rel="stylesheet" type="text/css" href="css/defined/scroll.css" />
 		<link rel="stylesheet" type="text/css" href="css/pages/index.css" />
@@ -228,7 +228,7 @@
 					url: url_getGoodsList
 				}
 				var listObj;
-				judgeLoginStorageReferrer(function(){
+				judgeLoginStorageReferrer(function(){//判断用户登录，判断详情页连接携带联系人
 					listObj = list.init(ops);					
 				})
 				

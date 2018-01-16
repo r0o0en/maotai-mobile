@@ -126,11 +126,11 @@
 			//获取粉丝列表 url
 			var url_getFansList = getAjaxOrigin() + '/api/myself/fansDataList';
 			// 获取 我的邀请人 url 
-			var url_getInviter = getAjaxOrigin() + '/api/myself/fansData';
+//			var url_getInviter = getAjaxOrigin() + '/api/myself/fansData';
 			// 设置 我的邀请人 url 
-			var url_setInviter = getAjaxOrigin() + '/api/myself/addPidByMobile';			
+//			var url_setInviter = getAjaxOrigin() + '/api/myself/addPidByMobile';			
 			
-			
+			var urld = getQueryData();
 			$(function(){
 				//列表参数
 	    	    var listObj,
@@ -142,20 +142,30 @@
 		    		};
 		    	
 				//先获取是否已有 我的邀请人 和粉丝数量
-		    	ajax({
-		    		type:'get',
-		    		url:url_getInviter,
-		    		success:function(data){
-		    			if(data.data.fansCount){
-		    				$('#fansNumber').html('拥有粉丝： <span class="cl-red "> '+data.data.fansCount+' </span> 位')
-		    			}
-		    			if(data.data.pidMobile){
-		    				$('#invite').val(data.data.pidMobile+'【'+data.data.pidRankText +'】').attr({'disabled':'disabled'}).prev().show();
-		    				$('#invitebtn').hide();
-		    			}
-		    			listObj= list.init(ops);
+				getInviter(function(data){
+					if(data.data.fansCount){
+		    			$('#fansNumber').html('拥有粉丝： <span class="cl-red "> '+data.data.fansCount+' </span> 位')
 		    		}
-		    	});
+		    		if(data.data.pidMobile){ //有邀请人
+		    			$('#invite').val(data.data.pidMobile+'【'+data.data.pidRankText +'】').attr({'disabled':'disabled'}).prev().show();
+		    			$('#invitebtn').hide();
+		    		}
+		    		listObj= list.init(ops);
+				});
+//		    	ajax({
+//		    		type:'get',
+//		    		url:url_getInviter,
+//		    		success:function(data){
+//		    			if(data.data.fansCount){
+//		    				$('#fansNumber').html('拥有粉丝： <span class="cl-red "> '+data.data.fansCount+' </span> 位')
+//		    			}
+//		    			if(data.data.pidMobile){
+//		    				$('#invite').val(data.data.pidMobile+'【'+data.data.pidRankText +'】').attr({'disabled':'disabled'}).prev().show();
+//		    				$('#invitebtn').hide();
+//		    			}
+//		    			listObj= list.init(ops);
+//		    		}
+//		    	});
 				//先获取是否已有 我的邀请人
 //				getMyInfo(function (data) {
 //					console.log(data,data.data.pid);
@@ -200,6 +210,13 @@
 						url:url_setInviter,
 						data:{mobile:invite.val()},
 						success:function () {
+							if(!!urld.beforepage){
+								setTimeout(function () {
+									goBack();
+									location.href = urld.beforepage +'.html'+location.search;
+								},1000);	
+								return false;	
+							}
 							setTimeout(function () {
 								location.reload();
 							},1000);

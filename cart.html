@@ -226,7 +226,7 @@
 					url: url_getCartList
 				}
 				var listObj;
-				judgeLoginStorageReferrer(function(){
+				judgeLoginStorageReferrer(function(){//判断用户登录，判断详情页连接携带联系人
 					listObj = list.init(ops);					
 				})
 
@@ -290,27 +290,40 @@
 						modal('没有选中商品');
 						return false;
 					}
+					getInviter(function(data){//购买前判断是否有邀请人
+				    	if(data.data.pidMobile){ //有邀请人
+				    		buyHasInviterTrue(item);
+				    	}else{
+				    		modal('没有邀请人，请前往‘我的’填写邀请人');
+				    		setTimeout(function () {
+				    			location.href = 'myFans.html?beforepage=cart';
+				    		},1000);
+				    		return false;
+				    	}
+					});
+				});
+				function buyHasInviterTrue(item){
 					var d = {
 						buyType: item.eq(0).attr('data-type'),
 						goodsMap: {},
-						//						goodsList:[]
+						//goodsList:[]
 					};
 					item.each(function(i, e) {
 						//商品ID：商品数量
 						d.goodsMap[$(e).val()] = $(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val();
-						//						d.goodsList.push({
-						//							id:$(e).val(),
-						//							total:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val(),
-						//							price:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.price').val(),
-						//							goodsName:$(e).attr('data-name')
-						//						});
+//						d.goodsList.push({
+//							id:$(e).val(),
+//							total:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.cu-input').val(),
+//							price:$(e).parents('.my-list-checked').siblings('.my-list-content').find('.price').val(),
+//							goodsName:$(e).attr('data-name')
+//						});
 					});
 					settlementOrder(d, function(data) { //计算订单
-						//						d.sumprice = $('.sum-price .money').text();
+						//d.sumprice = $('.sum-price .money').text();
 						location.href = 'orderSettlement.html?cart=true&data=' + encodeURI(JSON.stringify(d));
 					});
-					//					location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));
-				});
+					//location.href = 'orderSettlement.html?cart=true&data='+encodeURI(JSON.stringify(d));					
+				}
 			})
 			//判断是否处于编辑状态 
 			function judgeEidit() {

@@ -32,6 +32,7 @@
 		<script src="js/scroll/underscore.js"></script>
 		<script src="js/swiper/swiper-3.4.2.jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/cart.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/setting.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body class="bg-eee">
@@ -143,6 +144,7 @@
 			var goods = false;
 			/* 获取url 带参 */
 			var urld = getQueryData();
+			
 			$(function  () {
 				if(urld.id) {
 					//获取商品
@@ -158,7 +160,6 @@
 				}
 			});
 			
-
 			//iscrollContent();
 			function getDetails() {//获取商品详情
 				ajax({
@@ -203,7 +204,21 @@
 			//立即购买
 			function goodsDetailsBuy(id) {
 				if(!goods){modal('数据错误');return false;}
-				
+				//判断是否拥有邀请人
+				var hasInviter = false;
+				getInviter(function(data){//购买前判断是否有邀请人
+			    	if(data.data.pidMobile){ //有邀请人
+			    		buyHasInviterTrue(id);
+			    	}else{
+			    		modal('没有邀请人，请前往‘我的’填写邀请人');
+			    		setTimeout(function () {
+			    			location.href = 'myFans.html'+location.search + '&beforepage=goodsDetails ';
+			    		},1000);
+			    		return false;
+			    	}
+				});
+			}
+			function buyHasInviterTrue(id) { //如果有邀请人，执行购买
 				var num = parseInt($('.cu-input').val());
 				if(num < 1) {num == 1;}
 				var d = {

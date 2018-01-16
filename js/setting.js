@@ -3,8 +3,10 @@ var url_getMyInfo = getAjaxOrigin() + '/api/myself/detailInfo';
 //获取我的简单信息 get
 var url_getSimpleInfo = getAjaxOrigin() + '/api/myself/simpleInfo';
 
-//添加邀请人 post
-var url_addMyInviter = getAjaxOrigin() + 'api/myself/addPidByMobile';
+// 获取 我的邀请人 url  get
+var url_getInviter = getAjaxOrigin() + '/api/myself/fansData';
+// 设置 我的邀请人 url  post
+var url_setInviter = getAjaxOrigin() + '/api/myself/addPidByMobile';	
 
 //退出登录
 var url_logout = getAjaxOrigin() + '/api/userAddr/getAddrList';
@@ -49,6 +51,34 @@ function logout(fun) {
 				expires: 0
 			});
 			location.href = 'login.html';
+		}
+	})
+}
+//获取邀请人信息
+function getInviter(fun) {
+	ajax({
+		type: 'get',
+		info:"获取我的邀请人",
+		url: url_getInviter,
+		success: function(data) {
+			if(fun) {
+				fun(data);
+			}
+		}
+	})
+}
+//设置邀请人信息
+function setInviter(val,fun) {
+	if(!!!val){modal('没有传入邀请人号码，设置失败');return false;}
+	ajax({
+		url: url_setInviter,
+		info:"设置我的邀请人",
+		url:url_setInviter,
+		data:{mobile:val},
+		success: function(data) {
+			if(fun) {
+				fun(data);
+			}
 		}
 	})
 }
@@ -138,7 +168,7 @@ function getArea(pid, fun) { //获取县区
 
 function getAreaOption(parent, pid, val) { //设置县区
 	getArea(pid, function(data) {
-		var str = '<option value="">请选择城市</option>';
+		var str = '<option value="">请选择县/区</option>';
 		if(val) {
 			$.each(data, function(i, e) {
 				str += '<option value="' + e.id + '" ' + (e.id == val ? 'selected' : '') + '>' + e.areaName + '</option>'
@@ -184,7 +214,7 @@ function cityEvent(e) { //城市联动
 	var a = $('select.area');
 	if(a.length > 0) {
 		if(val) {
-			getCityOption(a, val);
+			getAreaOption(a, val);
 		} else {
 			setOption(a, '<option value="">请选择区/县</option>');
 		}
